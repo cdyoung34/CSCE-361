@@ -6,7 +6,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Manager {
+public class Manager extends Account{
 
 	String id;
 	String firstName;
@@ -15,19 +15,12 @@ public class Manager {
 	String managerId;
 
 	public Manager(String id, String firstName, String lastName, String userName, String managerId) {
-		super();
-		this.id = id;
-		this.firstName = firstName;
-		this.lastName = lastName;
-		this.userName = userName;
+		super(id, firstName, lastName, userName);
 		this.managerId = managerId;
 	}
 
 	public Manager(Manager m) {
-		this.id = m.getId();
-		this.firstName = m.getFirstName();
-		this.lastName = m.getLastName();
-		this.userName = m.getUserName();
+		super(m.getId(), m.getFirstName(), m.getLastName(), m.getUserName());
 		this.managerId = m.getManagerId();
 
 	}
@@ -111,5 +104,6 @@ public class Manager {
 	public void setManagerId(String managerId) {
 		this.managerId = managerId;
 	}
+
 
 }

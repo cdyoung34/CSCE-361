@@ -6,7 +6,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Employee {
+public class Employee extends Account{
 
 	String id;
 	String firstName;
@@ -14,19 +14,12 @@ public class Employee {
 	String userName;
 
 	public Employee(String id, String firstName, String lastName, String userName) {
-		super();
-		this.id = id;
-		this.firstName = firstName;
-		this.lastName = lastName;
-		this.userName = userName;
+		super(id, firstName, lastName, userName);
+		
 	}
 
 	public Employee(Employee e) {
-		this.id = e.getId();
-		this.firstName = e.getFirstName();
-		this.lastName = e.getLastName();
-		this.userName = e.getUserName();
-
+		super(e.getId(), e.getFirstName(), e.getLastName(), e.getUserName());
 	}
 
 	//method to create a person
@@ -98,6 +91,7 @@ public class Employee {
 	public void setUserName(String userName) {
 		this.userName = userName;
 	}
+
 
 
 }
