@@ -1,0 +1,103 @@
+package rim;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
+
+public class Employee {
+
+	String id;
+	String firstName;
+	String lastName;
+	String userName;
+
+	public Employee(String id, String firstName, String lastName, String userName) {
+		super();
+		this.id = id;
+		this.firstName = firstName;
+		this.lastName = lastName;
+		this.userName = userName;
+	}
+
+	public Employee(Employee e) {
+		this.id = e.getId();
+		this.firstName = e.getFirstName();
+		this.lastName = e.getLastName();
+		this.userName = e.getUserName();
+
+	}
+
+	//method to create a person
+	public static List<Employee> getEmployees(){
+
+		Connection conn = ConnectionFactory.makeConnection();
+
+		String query = "SELECT e.id AS id, " +
+				" 		e.first_name AS firstName, " +
+				"       e.last_name AS lastName, " + 
+				"       e.user_name AS userName, " +
+				"FROM Employees e WHERE manager_id is NULL";
+
+
+		List<Employee> employees = new ArrayList<Employee>();
+
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+
+		try {
+			ps = conn.prepareStatement(query);
+			rs = ps.executeQuery();
+			while(rs.next()) {
+				String id       = rs.getString("id");
+				String firstName       = rs.getString("first_name");
+				String lastName   = rs.getString("last_name");
+				String userName = rs.getString("user_name");
+
+				Employee em = new Employee(id, firstName, lastName, userName);
+				employees.add(em);
+			}
+		} catch (SQLException e) {
+			System.out.println("SQLException: ");
+			e.printStackTrace();
+			throw new RuntimeException(e);
+		}
+		ConnectionFactory.closeConnection(conn, ps, rs);
+		return employees;
+	}
+
+	public String getId() {
+		return id;
+	}
+
+	public void setId(String id) {
+		this.id = id;
+	}
+
+	public String getFirstName() {
+		return firstName;
+	}
+
+	public void setFirstName(String firstName) {
+		this.firstName = firstName;
+	}
+
+	public String getLastName() {
+		return lastName;
+	}
+
+	public void setLastName(String lastName) {
+		this.lastName = lastName;
+	}
+
+	public String getUserName() {
+		return userName;
+	}
+
+	public void setUserName(String userName) {
+		this.userName = userName;
+	}
+
+
+}
