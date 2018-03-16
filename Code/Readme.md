@@ -1,1 +1,2 @@
-
+- all file should be within the rim package
+- connectionFactory contains methods to make and close connections with mySql
