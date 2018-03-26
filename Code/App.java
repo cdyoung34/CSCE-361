@@ -13,12 +13,13 @@ public class App {
 	public static void main(String[] args) {
 		
 		App app = new App();
+//Product product = new Product();
 		
 		//We have to discuss about this method.  None of our class has these variable
 		//app.addToStock( product_id,  price,  threshold,  quantity,  type,  description,  supplier);
 		
 		app.getProductCode();
-		app.getItemsSold("03/03/2018");
+//app.getItemsSold("03/03/2018");
 		int id = 1; // to delete;
 		app.getThreshold(id);
 
@@ -148,67 +149,6 @@ public class App {
 			e.printStackTrace();
 			throw new RuntimeException(e);
 		}
-	}
-	
-	private void  getItemsSold(String date){
-
-				
-		Connection conn = null;
-		ResultSet rs = null;
-		PreparedStatement ps = null;
-		
-		try {
-			try {
-				Class.forName(cred.driver).newInstance();
-			} catch (InstantiationException | IllegalAccessException e) {
-				e.printStackTrace();
-				throw new RuntimeException(e);
-			}
-		} catch (ClassNotFoundException e) {
-			e.printStackTrace();
-			System.out.println("Cannot load Driver ");
-		}
-		try {
-			conn = DriverManager.getConnection(cred.url, cred.userName, cred.password);
-		} catch (SQLException e) {
-			e.printStackTrace();
-			throw new RuntimeException(e);
-		}
-		//itemSoldPerDay
-		 String query = " select * from  Sales where date = ?  ";    
-		 
-		try {
-			ps = conn.prepareStatement(query);
-			ps.setString(1, date);
-			rs = ps.executeQuery();
-			System.out.print("id\t\t date\t\t sum_total \t quantity\n");
-			while(rs.next()){
-				System.out.printf("%d \t\t %s \t %d \t\t %d\n", rs.getInt("id"), rs.getString("date"), rs.getInt("sum_total"), rs.getInt("quantity")  );
-			}
-			System.out.println();
-		} catch (SQLException e) {
-			System.out.println("SQLException: ...");
-			e.printStackTrace();
-			throw new RuntimeException(e);
-		}
-				
-		try {
-			if(rs != null && !rs.isClosed()){
-				rs.close();
-			}
-			if(ps != null && !ps.isClosed()){
-				ps.close();
-			}
-			if(conn != null && conn.isClosed()){
-				conn.close();
-			}
-		} catch (SQLException e) {
-			System.out.println("SQLException: cannot close");
-			e.printStackTrace();
-			throw new RuntimeException(e);
-		}
-		
-		//return itemsSold;
 	}
 	
 	
