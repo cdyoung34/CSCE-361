@@ -8,18 +8,13 @@ import java.util.List;
 
 public class Employee extends Account{
 
-	String id;
-	String firstName;
-	String lastName;
-	String userName;
-
-	public Employee(String id, String firstName, String lastName, String userName) {
-		super(id, firstName, lastName, userName);
+	public Employee(String id, String firstName, String lastName, String userName, String managerId) {
+		super(id, firstName, lastName, userName, managerId);
 		
 	}
 
 	public Employee(Employee e) {
-		super(e.getId(), e.getFirstName(), e.getLastName(), e.getUserName());
+		super(e.getId(), e.getFirstName(), e.getLastName(), e.getUserName(), e.getManagerId());
 	}
 
 	//method to create a person
@@ -30,8 +25,10 @@ public class Employee extends Account{
 		String query = "SELECT e.id AS id, " +
 				" 		e.first_name AS firstName, " +
 				"       e.last_name AS lastName, " + 
-				"       e.user_name AS userName, " +
+				"       e.user_name AS userName " +
 				"FROM Employees e WHERE manager_id is NULL";
+		
+		//System.out.println(query);
 
 
 		List<Employee> employees = new ArrayList<Employee>();
@@ -44,11 +41,11 @@ public class Employee extends Account{
 			rs = ps.executeQuery();
 			while(rs.next()) {
 				String id       = rs.getString("id");
-				String firstName       = rs.getString("first_name");
-				String lastName   = rs.getString("last_name");
-				String userName = rs.getString("user_name");
+				String firstName       = rs.getString("firstName");
+				String lastName   = rs.getString("lastName");
+				String userName = rs.getString("userName");
 
-				Employee em = new Employee(id, firstName, lastName, userName);
+				Employee em = new Employee(id, firstName, lastName, userName, managerId);
 				employees.add(em);
 			}
 		} catch (SQLException e) {
@@ -90,6 +87,12 @@ public class Employee extends Account{
 
 	public void setUserName(String userName) {
 		this.userName = userName;
+	}
+
+	@Override
+	public String getManagerId() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 

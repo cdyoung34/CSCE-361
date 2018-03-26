@@ -8,19 +8,15 @@ import java.util.List;
 
 public class Manager extends Account{
 
-	String id;
-	String firstName;
-	String lastName;
-	String userName;
 	String managerId;
 
 	public Manager(String id, String firstName, String lastName, String userName, String managerId) {
-		super(id, firstName, lastName, userName);
+		super(id, firstName, lastName, userName, managerId);
 		this.managerId = managerId;
 	}
 
 	public Manager(Manager m) {
-		super(m.getId(), m.getFirstName(), m.getLastName(), m.getUserName());
+		super(m.getId(), m.getFirstName(), m.getLastName(), m.getUserName(), m.getManagerId());
 		this.managerId = m.getManagerId();
 
 	}
@@ -48,10 +44,10 @@ public class Manager extends Account{
 			rs = ps.executeQuery();
 			while(rs.next()) {
 				String id       = rs.getString("id");
-				String firstName       = rs.getString("first_name");
-				String lastName   = rs.getString("last_name");
-				String userName = rs.getString("user_name");
-				String managerId = rs.getString("manager_id");
+				String firstName       = rs.getString("firstName");
+				String lastName   = rs.getString("lastName");
+				String userName = rs.getString("userName");
+				String managerId = rs.getString("managerId");
 
 				Manager m = new Manager(id, firstName, lastName, userName, managerId);
 				managers.add(m);

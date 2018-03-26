@@ -12,7 +12,10 @@ import java.util.Scanner;;
 public class LoginView {
 
 	public static void login(){
-		System.out.println("Welcome to the Retail Inventory Management System");
+		System.out.print("******************************************************************************\n"
+				+ "        Login Screen\n"
+				+ "******************************************************************************\n");
+		
 		System.out.print("Username: ");
 
 		Scanner s = new Scanner(System.in);
@@ -24,7 +27,7 @@ public class LoginView {
 		String password = s.nextLine();
 		while(!checkPassword(username, password))
 		{
-			System.out.println("Incorrect username or password");
+			System.out.println("\nIncorrect username or password");
 			System.out.print("Username: ");
 			username = s.nextLine();
 
@@ -32,9 +35,14 @@ public class LoginView {
 			password = s.nextLine();
 		}
 		
-
-
-
+		Account.setCurrentUser(Account.accountFromUsername(username));
+		
+		System.out.print("******************************************************************************\n"
+				+ "        Welcome to Retail Inventory Management System\n"
+				+ "******************************************************************************\n");
+//				+ "Commands:\n"
+//				+ "quit logout help\n");
+		InventoryView.displayProducts();
 	}
 
 	private static boolean checkPassword(String username, String password) {
@@ -71,14 +79,16 @@ public class LoginView {
 			throw new RuntimeException(e);
 		}
 		ConnectionFactory.closeConnection(conn, ps, rs);
-		if(dataPassword.equals(password))
+		if(dataPassword == null)
+		{
+			return false;
+		}
+		else if(dataPassword.equals(password))
 		{
 			return true;
 		}
 		else
 		{
-			System.out.println(dataPassword);
-			System.out.println(password);
 			return false;
 		}
 
