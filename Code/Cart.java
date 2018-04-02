@@ -7,23 +7,77 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+
 public class Cart {
+static List<CartItem> cart = new ArrayList<CartItem>();
 	
-	public static void purchaseProduct(Product p, int quantity) 
+	public static void addToCart(Product p, int quantity){
+		int SellingQuantity = quantity;
+		boolean same= false;
+		CartItem item= new CartItem(p, SellingQuantity);
+		for(CartItem x : cart){
+			if(x.getP()==p){
+				x.setSellingQuantity(x.getSellingQuantity()+quantity);
+				same=true;
+			}
+		}
+		if(!same){
+			cart.add(item);
+		}
+	}
+	
+	public static void deleteItem(int index){
+		try{
+		    cart.remove(index-1);
+		}catch(IndexOutOfBoundsException exception){
+			System.out.println("No such item rank in your cart");
+		}
+		
+	}
+	
+	public static void editItem(int index, int quantity){
+		try{
+			cart.get(index-1).setSellingQuantity(quantity);
+		}
+		catch(IndexOutOfBoundsException exception){
+			System.out.println("No such item rank in your cart");
+		}
+	}
+	
+	public static List<CartItem> getCart(){
+		return cart;
+	}
+	
+	public static boolean checkOut(){
+		
+		double totalSale=0;
+		double salesTax;
+		
+		for (CartItem p : cart) {
+			totalSale+=purchaseProduct(p);
+		}
+		
+		salesTax= totalSale * .07;
+		System.out.printf("Tax: %36s%.2f \nTotal: %34s%.2f \n","$",salesTax,"$",totalSale+salesTax);
+		cart.clear();
+		return true;
+	}
+	
+	public static double purchaseProduct(CartItem p) 
 	{
 	
 		String date = Date.getDate();
-		String productId = p.getId();
-		int quantitySold = quantity;
-		double totalSale = p.getPrice() * quantitySold;
+		String productId = p.getP().getId();
+		int quantitySold = p.getSellingQuantity();
+		double totalSale = p.getP().getPrice() * quantitySold;
 		double salesTax = totalSale * .07;
 		String employeeId = Account.getCurrentUser().getId();
 		
 		insertSaleEntry(date, productId, quantitySold, totalSale, salesTax, employeeId);
 		Product.updateQuantity(productId, -quantitySold);
 			
-		System.out.printf("\"%s\" x%d purchased for $%.2f plus $%.2f.\n", p.getName(), quantitySold, totalSale, salesTax);
-		System.out.printf("Total: $%.2f\n", totalSale + salesTax);
+		System.out.print(p);
+		return totalSale;
 	}
 
 	public static void insertSaleEntry(String date, String productId, int quantitySold, double totalSale, double salesTax, String employeeId){

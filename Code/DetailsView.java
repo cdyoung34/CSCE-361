@@ -27,6 +27,9 @@ public class DetailsView {
 			{
 				AccountView.accountView();
 			}
+			else if(command.equals("cart")){
+				CartView.DisplayCart();
+			}
 			else if(command.contains("buy") && command.split(" ")[1].matches("\\d+"))
 			{
 				int orderQuantity = Integer.parseInt(command.split(" ")[1]);
@@ -37,9 +40,8 @@ public class DetailsView {
 				}
 				else
 				{
-					Cart.purchaseProduct(p, orderQuantity);
+					Cart.addToCart(p, orderQuantity);
 				}
-
 			}
 			else if(command.contains("stock") && command.split(" ")[1].matches("\\d+"))
 			{

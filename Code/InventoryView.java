@@ -49,6 +49,9 @@ public class InventoryView
 					Product.addProduct(name, type, description, quantity, threshold, price, supplier);
 				}
 			}
+			else if(command.equals("cart")){
+				CartView.DisplayCart();
+			}
 			else if(command.equals("account"))
 			{
 				System.out.println(Account.getCurrentUser().getManagerId());
