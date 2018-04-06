@@ -18,6 +18,8 @@ public class CartView {
 				System.out.print("Enter the item rank in your cart and the quantity you want change it to: ");
 				String edit = s.nextLine();
 				Cart.editItem(Integer.parseInt(edit.split(" ")[0]), Integer.parseInt(edit.split(" ")[1]));
+			} else if(command.equals("clear")){
+				Cart.clearCart();
 			} else if (command.contains("delete") && command.split(" ")[1].matches("\\d+")) {
 				Cart.deleteItem(Integer.parseInt(command.split(" ")[1]));
 			} else if (command.equals("checkout")) {
