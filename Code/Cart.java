@@ -35,6 +35,9 @@ static List<CartItem> cart = new ArrayList<CartItem>();
 		
 	}
 	
+	public static void clearCart(){
+		cart.clear();
+	}
 	public static void editItem(int index, int quantity){
 		try{
 			cart.get(index-1).setSellingQuantity(quantity);
