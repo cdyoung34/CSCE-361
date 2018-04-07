@@ -13,7 +13,7 @@ public class CartView {
 			String command = s.nextLine();
 
 			if (command.equals("back") || command.equals("inventory")) {
-				InventoryView.displayProducts();
+				InventoryView.displayProducts(0);
 			} else if (command.equals("edit")) {
 				System.out.print("Enter the item rank in your cart and the quantity you want change it to: ");
 				String edit = s.nextLine();
@@ -23,12 +23,8 @@ public class CartView {
 			} else if (command.contains("delete") && command.split(" ")[1].matches("\\d+")) {
 				Cart.deleteItem(Integer.parseInt(command.split(" ")[1]));
 			} else if (command.equals("checkout")) {
-				if(Cart.checkOut() == true){
-					System.out.println("You have successfully checked out your items in cart\n");
-				}
-				else{
-					System.out.println("check out fail\n");
-				}
+				Cart.checkOut();
+				System.out.println("You have successfully checked out your items in cart\n");
 			}
 		}
 	}

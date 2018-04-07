@@ -6,7 +6,7 @@ public class GuiInteract {
 	{
 		LoginView.login();
 		clearConsole();
-		InventoryView.displayProducts();
+		InventoryView.displayProducts(0);
 		
 	}
 

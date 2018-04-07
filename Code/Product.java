@@ -5,6 +5,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 public class Product {
@@ -208,6 +210,75 @@ public class Product {
 		ConnectionFactory.closeConnection(conn, ps, rs);
 
 
+	}
+
+	public static void removeProduct(Product p) {
+		Connection conn = ConnectionFactory.makeConnection();
+
+		String query = "DELETE FROM Products WHERE id = " + p.getId();
+
+		//System.out.println(query);
+
+
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+
+		try {
+			ps = conn.prepareStatement(query);
+			ps.executeUpdate();
+
+		} catch (SQLException e) {
+			System.out.println("SQLException: ");
+			e.printStackTrace();
+			throw new RuntimeException(e);
+		}
+		System.out.println("'" + p.getName() + "' sucsessfully removed from the inventory.");
+		ConnectionFactory.closeConnection(conn, ps, rs);
+		
+	}
+
+	public static List<Product> sortName(List<Product> products) {
+		for(int i = 0; i < products.size(); i++){
+			int index = i;
+			for(int j = i +1; j < products.size(); j++){
+				String productName1 = products.get(index).getName();
+				String productName2 = products.get(j).getName();
+
+				if(productName1.compareToIgnoreCase(productName2) > 0){
+					index = j;
+				}
+
+				Collections.swap(products, index, i);
+
+			}
+		}
+		return products;
+		
+	}
+
+	public static void updatePrice(Product p, double newPrice) {
+		Connection conn = ConnectionFactory.makeConnection();
+
+		String query = "UPDATE Products SET price = " + newPrice + " WHERE id = \"" + p.getId() + "\"";
+
+
+		//System.out.println(query);
+
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+
+		try {
+			ps = conn.prepareStatement(query);
+			ps.executeUpdate();
+
+		} catch (SQLException e) {
+			System.out.println("SQLException: ");
+			e.printStackTrace();
+			throw new RuntimeException(e);
+		}
+		System.out.println("'" + p.getName() + "' sucsessfully reprice in the inventory.");
+		ConnectionFactory.closeConnection(conn, ps, rs);
+		
 	}
 
 }

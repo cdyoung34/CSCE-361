@@ -21,7 +21,7 @@ public class DetailsView {
 
 			if(command.equals("back") || command.equals("inventory"))
 			{
-				InventoryView.displayProducts();
+				InventoryView.displayProducts(0);
 			}
 			else if(command.equals("account"))
 			{
@@ -30,7 +30,7 @@ public class DetailsView {
 			else if(command.equals("cart")){
 				CartView.DisplayCart();
 			}
-			else if(command.contains("buy") && command.split(" ")[1].matches("\\d+"))
+			else if(command.contains("buy") && command.split(" ")[1].matches("\\d+") && Integer.parseInt(command.split(" ")[1]) > 0)
 			{
 				int orderQuantity = Integer.parseInt(command.split(" ")[1]);
 				if(orderQuantity > p.getQuantity())
@@ -43,7 +43,7 @@ public class DetailsView {
 					Cart.addToCart(p, orderQuantity);
 				}
 			}
-			else if(command.contains("stock") && command.split(" ")[1].matches("\\d+"))
+			else if(command.contains("stock") && command.split(" ")[1].matches("\\d+") && Integer.parseInt(command.split(" ")[1]) > 0)
 			{
 				int stockQuantity = Integer.parseInt(command.split(" ")[1]);
 				if(Account.getCurrentUser().getManagerId() == null){
@@ -62,6 +62,38 @@ public class DetailsView {
 				}
 
 			}
+			else if(command.contains("price") && command.split(" ").length == 2 && command.split(" ")[1].matches("\\d+\\.\\d+") && Double.parseDouble(command.split(" ")[1]) >= 0)
+			{
+				if(Account.getCurrentUser().getManagerId() == null){
+					System.out.println("You do not have permission to update product prices. Only Managers can do so.");
+					continue;
+				}
+				else{
+
+					double price= Double.parseDouble(command.split(" ")[1]);
+					Product.updatePrice(p, price);
+				}
+			}
+			else if(command.equals("remove"))
+			{
+				if(Account.getCurrentUser().getManagerId() == null){
+					System.out.println("You do not have permission to add products. Only Managers can do so.");
+					continue;
+				}
+				else{
+					System.out.print("\nYou are about to remove an item from the inventory. Are you sure?: ");
+					String prompt = s.nextLine();
+					if(prompt.equals("yes"))
+					{
+						Product.removeProduct(p);
+						InventoryView.refreshDisplayProducts(0);
+					}
+				}
+			}
+			else if(command.equals("refresh"))
+			{
+				refreshDisplayDetails(p);
+			}
 			else if(command.contentEquals("logout"))
 			{
 				System.out.println("Logging Out...\n");
@@ -77,5 +109,10 @@ public class DetailsView {
 				System.out.println("Invalid Command.");
 			}
 		}
+	}
+
+	private static void refreshDisplayDetails(Product p) {
+		displayDetails(p);
+		
 	}
 }

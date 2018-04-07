@@ -42,7 +42,7 @@ public class LoginView {
 				+ "******************************************************************************\n");
 //				+ "Commands:\n"
 //				+ "quit logout help\n");
-		InventoryView.displayProducts();
+		InventoryView.displayProducts(0);
 	}
 
 	private static boolean checkPassword(String username, String password) {

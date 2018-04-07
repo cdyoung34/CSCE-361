@@ -42,7 +42,7 @@ public class AccountView {
 			}
 			else if(command.equals("inventory") || command.equals("back"))
 			{
-				InventoryView.displayProducts();
+				InventoryView.displayProducts(0);
 			}
 			else if(command.contentEquals("logout"))
 			{
@@ -112,7 +112,7 @@ public class AccountView {
 			}
 			else if(command.equals("inventory") || command.equals("back"))
 			{
-				InventoryView.displayProducts();
+				InventoryView.displayProducts(0);
 			}
 			else if(command.contentEquals("logout"))
 			{
@@ -161,7 +161,7 @@ public class AccountView {
 			}
 			else if(command.equals("inventory") || command.equals("back"))
 			{
-				InventoryView.displayProducts();
+				InventoryView.displayProducts(0);
 			}
 			else if(command.contentEquals("logout"))
 			{
