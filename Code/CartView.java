@@ -23,8 +23,12 @@ public class CartView {
 			} else if (command.contains("delete") && command.split(" ")[1].matches("\\d+")) {
 				Cart.deleteItem(Integer.parseInt(command.split(" ")[1]));
 			} else if (command.equals("checkout")) {
-				Cart.checkOut();
-				System.out.println("You have successfully checked out your items in cart\n");
+				if(Cart.checkOut() == true){
+					System.out.println("You have successfully checked out your items in cart\n");
+				}
+				else{
+					System.out.println("check out fail\n");
+				}
 			}
 		}
 	}
