@@ -55,15 +55,20 @@ static List<CartItem> cart = new ArrayList<CartItem>();
 		
 		double totalSale=0;
 		double salesTax;
-		
-		for (CartItem p : cart) {
-			totalSale+=purchaseProduct(p);
+		if(cart.isEmpty()){
+			System.out.println("Your cart is empty");
+			return false;
 		}
+		else{
+			for (CartItem p : cart) {
+				totalSale+=purchaseProduct(p);
+			}
 		
-		salesTax= totalSale * .07;
-		System.out.printf("Tax: %36s%.2f \nTotal: %34s%.2f \n","$",salesTax,"$",totalSale+salesTax);
-		cart.clear();
-		return true;
+			salesTax= totalSale * .07;
+			System.out.printf("Tax: %36s%.2f \nTotal: %34s%.2f \n","$",salesTax,"$",totalSale+salesTax);
+			cart.clear();
+			return true;
+		}
 	}
 	
 	public static double purchaseProduct(CartItem p) 
