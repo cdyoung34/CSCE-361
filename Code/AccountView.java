@@ -54,6 +54,10 @@ public class AccountView {
 				System.out.println("Quitting...\n");
 				System.exit(1);;
 			}
+			else if(command.equals("refresh"))
+			{
+				refreshAccounts();
+			}
 			else
 			{
 				System.out.println("Invalid Command.");
@@ -124,6 +128,10 @@ public class AccountView {
 				System.out.println("Quitting...\n");
 				System.exit(1);;
 			}
+			else if(command.equals("refresh"))
+			{
+				refreshAccounts();
+			}
 			else
 			{
 				System.out.println("Invalid Command.");
@@ -173,6 +181,10 @@ public class AccountView {
 				System.out.println("Quitting...\n");
 				System.exit(1);;
 			}
+			else if(command.equals("refresh"))
+			{
+				refreshAccount(a);
+			}
 			else
 			{
 				System.out.println("Invalid Command.");
@@ -180,5 +192,14 @@ public class AccountView {
 		}
 
 	}
+	
+	public static void refreshAccounts() {
+		accountView();
 
+	}
+
+	public static void refreshAccount(Account a) {
+		displayAccount(a);
+
+	}
 }

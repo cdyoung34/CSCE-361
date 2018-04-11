@@ -1,19 +1,17 @@
 package rim;
 
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 import java.util.Scanner;
 
-public class InventoryView 
-{	
-	public static void displayProducts(int sort) {
-		List<Product> products = Product.getProducts();
+public class ThresholdView {
+
+	public static void displayThresholdProduct(int sort) {
+		List<Product> products = Product.getThresholdProducts();
 		int count = 1;
 		int sortType = sort;
 
 		System.out.print("******************************************************************************\n"
-				+ "        Inventory Product Overview\n"
+				+ "        Threshold Information\n"
 				+ "******************************************************************************\n");
 		
 		if(sortType == 1)
@@ -89,7 +87,7 @@ public class InventoryView
 						String temp = command.split(" ")[1];
 						int productNum = Integer.parseInt(temp) -1;
 						Product.removeProduct(products.get(productNum));
-						refreshDisplayProducts(sortType);
+						refreshThresholdProducts(sortType);
 					}
 				}
 			}
@@ -99,35 +97,31 @@ public class InventoryView
 				if(sortInput.equals("name"))
 				{
 					sortType = 1;
-					refreshDisplayProducts(sortType);
+					refreshThresholdProducts(sortType);
 				}
 				else if(sortInput.equals("price"))
 				{
 					sortType = 2;
-					refreshDisplayProducts(sortType);}
+					refreshThresholdProducts(sortType);}
 				else if(sortInput.equals("quantity"))
 				{
 					sortType = 3;
-					refreshDisplayProducts(sortType);}
+					refreshThresholdProducts(sortType);}
 				else if(sortInput.equals("type"))
 				{
 					sortType = 4;
-					refreshDisplayProducts(sortType);}
+					refreshThresholdProducts(sortType);}
 				else if(sortInput.equals("supplier"))
 				{
 					sortType = 5;
-					refreshDisplayProducts(sortType);}
+					refreshThresholdProducts(sortType);}
 				else
 					System.out.println("Invalid Command.");
 
 			}
-			else if(command.equals("threshold"))
-			{
-				ThresholdView.displayThresholdProduct(sortType);
-			}
 			else if(command.equals("refresh"))
 			{
-				refreshDisplayProducts(sortType);
+				refreshThresholdProducts(sortType);
 			}
 			else if(command.equals("cart")){
 				CartView.DisplayCart();
@@ -147,6 +141,10 @@ public class InventoryView
 				System.out.println("Quitting...\n");
 				System.exit(1);;
 			}
+			else if(command.equals("back") || command.equals("inventory"))
+			{
+				InventoryView.displayProducts(0);
+			}
 			else
 			{
 				System.out.println("Invalid Command.");
@@ -154,10 +152,11 @@ public class InventoryView
 		}
 	}
 
-	public static void refreshDisplayProducts(int sort) {
-		displayProducts(sort);
+	public static void refreshThresholdProducts(int sort) {
+		displayThresholdProduct(sort);
 
 	}
 
 }
+
 

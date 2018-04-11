@@ -100,7 +100,56 @@ public class Product {
 		ConnectionFactory.closeConnection(conn, ps, rs);
 		return products;
 	}
+	public static List<Product> getThresholdProducts(){
 
+
+		Connection conn = ConnectionFactory.makeConnection();
+
+		String query = "SELECT p.id AS id, " +
+				" 		p.name AS name, " +
+				" 		p.type AS type, " +
+				"       p.description AS description, " + 
+				"       p.quantity AS quantity, " +
+				"       p.threshold AS threshold, " +
+				"       p.price AS price, " +
+				"       p.supplier AS supplier " +
+				"FROM Products p";
+
+		//System.out.println(query);
+
+
+		List<Product> products = new ArrayList<Product>();
+
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+
+		try {
+			ps = conn.prepareStatement(query);
+			rs = ps.executeQuery();
+			while(rs.next()) {
+				String id       = rs.getString("id");
+				String name       = rs.getString("name");
+				String type       = rs.getString("type");
+				String description   = rs.getString("description");
+				int quantity = Integer.parseInt(rs.getString("quantity"));
+				int threshold = Integer.parseInt(rs.getString("threshold"));
+				double price = Double.parseDouble(rs.getString("price"));
+				String supplier = rs.getString("supplier");
+
+				if(quantity < threshold)
+				{
+				Product p = new Product(id, name, type, description, quantity, threshold, price, supplier);
+				products.add(p);
+				}
+			}
+		} catch (SQLException e) {
+			System.out.println("SQLException: ");
+			e.printStackTrace();
+			throw new RuntimeException(e);
+		}
+		ConnectionFactory.closeConnection(conn, ps, rs);
+		return products;
+	}
 	//number should be pass as positive or negative as need be
 	public static void updateQuantity(String id, int number){
 		//System.out.println(number);
@@ -245,6 +294,82 @@ public class Product {
 				String productName2 = products.get(j).getName();
 
 				if(productName1.compareToIgnoreCase(productName2) > 0){
+					index = j;
+				}
+
+				Collections.swap(products, index, i);
+
+			}
+		}
+		return products;
+		
+	}
+	
+	public static List<Product> sortType(List<Product> products) {
+		for(int i = 0; i < products.size(); i++){
+			int index = i;
+			for(int j = i +1; j < products.size(); j++){
+				String productType1 = products.get(index).getType();
+				String productType2 = products.get(j).getType();
+
+				if(productType1.compareToIgnoreCase(productType2) > 0){
+					index = j;
+				}
+
+				Collections.swap(products, index, i);
+
+			}
+		}
+		return products;
+		
+	}
+	
+	public static List<Product> sortSupplier(List<Product> products) {
+		for(int i = 0; i < products.size(); i++){
+			int index = i;
+			for(int j = i +1; j < products.size(); j++){
+				String productSupplier1 = products.get(index).getSupplier();
+				String productSupplier2 = products.get(j).getSupplier();
+
+				if(productSupplier1.compareToIgnoreCase(productSupplier2) > 0){
+					index = j;
+				}
+
+				Collections.swap(products, index, i);
+
+			}
+		}
+		return products;
+		
+	}
+	
+	public static List<Product> sortPrice(List<Product> products) {
+		for(int i = 0; i < products.size(); i++){
+			int index = i;
+			for(int j = i +1; j < products.size(); j++){
+				double productPrice1 = products.get(index).getPrice();
+				double productPrice2 = products.get(j).getPrice();
+
+				if(productPrice1 > (productPrice2)){
+					index = j;
+				}
+
+				Collections.swap(products, index, i);
+
+			}
+		}
+		return products;
+		
+	}
+	
+	public static List<Product> sortQuantity(List<Product> products) {
+		for(int i = 0; i < products.size(); i++){
+			int index = i;
+			for(int j = i +1; j < products.size(); j++){
+				double productQuantity1 = products.get(index).getQuantity();
+				double productQuantity2 = products.get(j).getQuantity();
+
+				if(productQuantity1 > (productQuantity2)){
 					index = j;
 				}
 

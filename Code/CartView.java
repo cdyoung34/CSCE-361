@@ -7,7 +7,9 @@ public class CartView {
 
 		Scanner s = new Scanner(System.in);
 		while (true) {
-			System.out.println("\nYour Cart: ");
+			System.out.print("******************************************************************************\n"
+					+ "        Your Cart\n"
+					+ "******************************************************************************\n");
 			System.out.println(Cart.getCart().toString().replace("[", "").replace("]", "").replace(", ", ""));
 			System.out.print("\nEnter a command: ");
 			String command = s.nextLine();
@@ -29,6 +31,20 @@ public class CartView {
 				else{
 					System.out.println("check out fail\n");
 				}
+			}
+			else if(command.equals("refresh"))
+			{
+				DisplayCart();
+			}
+			else if(command.contentEquals("logout"))
+			{
+				System.out.println("Logging Out...\n");
+				LoginView.login();
+			}
+			else if(command.contentEquals("quit"))
+			{
+				System.out.println("Quitting...\n");
+				System.exit(1);;
 			}
 		}
 	}
