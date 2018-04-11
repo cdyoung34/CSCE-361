@@ -11,19 +11,8 @@ public class StatisticsView {
 	List<Sale> sales = new ArrayList<Sale>();
 	public StatisticsView(Product p) {
 		this.sales = this.getSales(p);
+		this.printStatistics(p);
 		
-		System.out.print("******************************************************************************\n"
-				+ "        Product Statistics: " + p.getName() +"\n"
-				+ "******************************************************************************\n");
-		
-		for(Sale s : sales) {
-			System.out.printf("Sale id: %s	Date: %s	Product id: %s	Product Name: %s	Quantity Sold: %d	Total Sale: $%f		Sales Tax: $%f\n",
-					s.getSaleId(), s.getDate(), s.getProductId(), s.getProductName(), s.getQuantity(), s.getTotalSale(), s.getSalesTax());
-		}
-		
-		System.out.println();
-		System.out.println("Total Items Sold: " + this.getTotalQuantity());
-		System.out.println("Total Sale Profits: $" + this.getTotalSale());
 	}
 	
 	private int getTotalQuantity() {
@@ -40,6 +29,21 @@ public class StatisticsView {
 			sum += s.getTotalSale();
 		}
 		return sum;		
+	}
+	
+	private void printStatistics(Product p) {
+		System.out.print("******************************************************************************\n"
+				+ "        Product Statistics: " + p.getName() +"\n"
+				+ "******************************************************************************\n");
+		
+		for(Sale s : sales) {
+			System.out.printf("Sale id: %s	Date: %s	Product id: %s	Product Name: %s	Quantity Sold: %d	Total Sale: $%f		Sales Tax: $%f\n",
+					s.getSaleId(), s.getDate(), s.getProductId(), s.getProductName(), s.getQuantity(), s.getTotalSale(), s.getSalesTax());
+		}
+		
+		System.out.println();
+		System.out.println("Total Items Sold: " + this.getTotalQuantity());
+		System.out.println("Total Sale Profits: $" + this.getTotalSale());
 	}
 	
 	private List<Sale> getSales (Product product) {
