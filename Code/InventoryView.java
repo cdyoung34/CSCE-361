@@ -159,11 +159,7 @@ public class InventoryView
 				}
 				System.out.println();
 				
-			} else if (command.equalsIgnoreCase("stats") || command.equalsIgnoreCase("statistics"))
-			{
-				InventoryStatistics invs = new InventoryStatistics(products);
-				invs.printStatistics();
-			}
+			} 
 			else
 			{
 				System.out.println("Invalid Command.");
