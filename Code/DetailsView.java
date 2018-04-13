@@ -104,6 +104,18 @@ public class DetailsView {
 				System.out.println("Quitting...\n");
 				System.exit(1);;
 			}
+			else if (command.contains("stats")) 
+			{
+				String [] temp = command.split(" ");
+				if(temp.length == 1) {
+					ItemStatistics itst = new ItemStatistics(p);
+					itst.printStatistics();
+				} else {
+					ItemStatistics itst = new ItemStatistics(p, temp[1]);
+					itst.printStatistics();
+				}
+				System.out.println();
+			}
 			else
 			{
 				System.out.println("Invalid Command.");

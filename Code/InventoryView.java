@@ -147,6 +147,23 @@ public class InventoryView
 				System.out.println("Quitting...\n");
 				System.exit(1);;
 			}
+			else if (command.contains("stats") || command.contains("statistics"))
+			{
+				String [] temp = command.split(" ");
+				if(temp.length == 1) {
+					InventoryStatistics invs = new InventoryStatistics(products);
+					invs.printStatistics();
+				} else {
+					InventoryStatistics invs = new InventoryStatistics(products, temp[1]);
+					invs.printStatistics();
+				}
+				System.out.println();
+				
+			} else if (command.equalsIgnoreCase("stats") || command.equalsIgnoreCase("statistics"))
+			{
+				InventoryStatistics invs = new InventoryStatistics(products);
+				invs.printStatistics();
+			}
 			else
 			{
 				System.out.println("Invalid Command.");
@@ -160,4 +177,3 @@ public class InventoryView
 	}
 
 }
-
