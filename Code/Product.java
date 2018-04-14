@@ -235,30 +235,30 @@ public class Product {
 	}
 
 	public static void addProduct(String name, String type, String description , int quantity, int threshold, double price, String supplier) {
-		Connection conn = ConnectionFactory.makeConnection();
+		if (!check.checkExistingProduct(name)) {
+			Connection conn = ConnectionFactory.makeConnection();
 
-		String query = "INSERT INTO Products (name, type, description, quantity, threshold, price,  supplier)" +
+			String query = "INSERT INTO Products (name, type, description, quantity, threshold, price,  supplier)" +
 				" 		VALUES ( '" + name + "','" + type + "','" + description + "', '" + quantity + "','" + threshold + "'" + ",'" + price + "'" + ",'" + supplier + "')";
 
-		//System.out.println(query);
+			//System.out.println(query);
 
 
-		PreparedStatement ps = null;
-		ResultSet rs = null;
+			PreparedStatement ps = null;
+			ResultSet rs = null;
 
-		try {
-			ps = conn.prepareStatement(query);
-			ps.executeUpdate();
-
-		} catch (SQLException e) {
-			System.out.println("SQLException: ");
-			e.printStackTrace();
-			throw new RuntimeException(e);
+			try {
+				ps = conn.prepareStatement(query);
+				ps.executeUpdate();
+	
+			} catch (SQLException e) {
+				System.out.println("SQLException: ");
+				e.printStackTrace();
+				throw new RuntimeException(e);
+			}
+			System.out.println("'" + name + "' sucsessfully added to the inventory.");
+			ConnectionFactory.closeConnection(conn, ps, rs);
 		}
-		System.out.println("'" + name + "' sucsessfully added to the inventory.");
-		ConnectionFactory.closeConnection(conn, ps, rs);
-
-
 	}
 
 	public static void removeProduct(Product p) {
