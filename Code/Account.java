@@ -106,30 +106,30 @@ public abstract class Account {
 
 	public static void addAccount(String firstName, String lastName, String username, String password,
 			Object managerId) {
-		Connection conn = ConnectionFactory.makeConnection();
+		if (!check.checkExistingUser(username)) {
+			Connection conn = ConnectionFactory.makeConnection();
 
-		String query = "INSERT INTO Employees (first_name, last_name, user_name, password, manager_id)" +
+			String query = "INSERT INTO Employees (first_name, last_name, user_name, password, manager_id)" +
 				" 		VALUES ( '" + firstName + "','" + lastName + "','" + username + "', '" + password + "'," + managerId+ ")";
 
-		//System.out.println(query);
 
 
-		PreparedStatement ps = null;
-		ResultSet rs = null;
+			PreparedStatement ps = null;
+			ResultSet rs = null;
 
-		try {
-			ps = conn.prepareStatement(query);
-			ps.executeUpdate();
+			try {
+				ps = conn.prepareStatement(query);
+				ps.executeUpdate();
 
-		} catch (SQLException e) {
-			System.out.println("SQLException: ");
-			e.printStackTrace();
-			throw new RuntimeException(e);
+			} catch (SQLException e) {
+				System.out.println("SQLException: ");
+				e.printStackTrace();
+				throw new RuntimeException(e);
+			}
+			System.out.println("'" + firstName + " " + lastName + "' sucsessfully added to the accounts.");
+			ConnectionFactory.closeConnection(conn, ps, rs);
+
 		}
-		System.out.println("'" + firstName + " " + lastName + "' sucsessfully added to the accounts.");
-		ConnectionFactory.closeConnection(conn, ps, rs);
-
-
 	}
 
 }
