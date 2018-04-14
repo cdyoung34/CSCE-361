@@ -46,6 +46,9 @@ public class CartView {
 				System.out.println("Quitting...\n");
 				System.exit(1);;
 			}
+			else{
+				System.out.println("Invalid command");
+			}
 		}
 	}
 }
