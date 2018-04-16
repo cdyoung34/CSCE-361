@@ -9,6 +9,9 @@ import java.util.List;
 
 public class Cart {
 	static List<CartItem> cart = new ArrayList<CartItem>();
+	static double totalSale = 0;
+	static double salesTax;
+	static boolean check = true;
 	
 	public static void addToCart(Product p, int quantity) {
 		int SellingQuantity = quantity;
@@ -47,24 +50,34 @@ public class Cart {
 	}
 
 	public static void clearCart() {
+		totalSale = 0;
+		salesTax = 0;
 		cart.clear();
 	}
-
+	public static String formatDetails() {
+		String str = "";
+		for (CartItem p : cart) {//check items in stock before process to check out
+			String price = String.format("$%.2f", p.getP().getPrice());
+			String tax = "" + p.getP().getPrice() * .07;
+			str += String.format("%s: %s\n", p.getP().getName(), price);
+		}
+		str += String.format("%s%s\n", "Tax: ", String.format("$%.2f", salesTax));
+		str += String.format("Total: $%.2f", totalSale + salesTax);
+		return str;
+	}
 	public static boolean checkOut() {
 
-		double totalSale = 0;
-		double salesTax;
-		boolean check = true;
+		
 		
 		if (cart.isEmpty()) {
-			System.out.println("Your cart is empty");
+			//System.out.println("Your cart is empty");
 			return false;
 		} else {
 			for (CartItem p : cart) {//check items in stock before process to check out
 				if (!checkItem(p.getP(), p.getSellingQuantity())) {
 					check = false;
 					cart.remove(p);
-					System.out.println("Item " + p.getP().getName() + " has been removed from your cart");
+					//System.out.println("Item " + p.getP().getName() + " has been removed from your cart");
 					break;
 				}
 			}
@@ -76,9 +89,9 @@ public class Cart {
 				}
 
 				salesTax = totalSale * .07;
-				System.out.println(saleId);
-				System.out.printf("Tax: %36s%.2f \nTotal: %34s%.2f \n", "$", salesTax, "$", totalSale + salesTax);
-				cart.clear();
+				//System.out.println(saleId);
+				//System.out.printf("Tax: %36s%.2f \nTotal: %34s%.2f \n", "$", salesTax, "$", totalSale + salesTax);
+				//cart.clear();
 				return true;
 			}
 			else{
@@ -99,7 +112,7 @@ public class Cart {
 		insertSaleEntry(saleId,date, productId, quantitySold, totalSale, salesTax, employeeId);
 		Product.updateQuantity(productId, -quantitySold);
 
-		System.out.print(p);
+		//System.out.print(p);
 		return totalSale;
 	}
 
@@ -129,10 +142,10 @@ public class Cart {
 		ConnectionFactory.closeConnection(conn, ps, rs);
 
 		if (quantity < quantityToBuy && quantity > 0) {
-			System.out.println("Item " + p.getName() + " does not have enough quantity in stock currently");
+			//System.out.println("Item " + p.getName() + " does not have enough quantity in stock currently");
 			return false;
 		} else if (quantity == -1) {
-			System.out.println("Item " + p.getName() + " had been removed from stock");
+			//System.out.println("Item " + p.getName() + " had been removed from stock");
 			return false;
 		} else {
 			return true;

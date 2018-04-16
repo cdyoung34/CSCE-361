@@ -1,5 +1,6 @@
 package rim;
 
+
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -43,6 +44,15 @@ public class Product {
 		this.price = p.getPrice();
 		this.supplier = p.getSupplier();
 
+	}
+	
+	/**
+	 * intended for GUI
+	 */
+	public String formatItemDetails() {
+		return String.format("Type: %s\nSystem Identifier: %s\nPrice: $%.2f\nQuantity: %s\nQuantity Threshold: %s\n"
+				+ "Description: %s\nSupplier: %s", this.getType(), this.getId(), this.getPrice(), this.getQuantity(), this.getThreshold(),
+				this.getDescription(), this.getSupplier());
 	}
 
 	public String getName() {
@@ -235,30 +245,30 @@ public class Product {
 	}
 
 	public static void addProduct(String name, String type, String description , int quantity, int threshold, double price, String supplier) {
-		if (!check.checkExistingProduct(name)) {
-			Connection conn = ConnectionFactory.makeConnection();
+		Connection conn = ConnectionFactory.makeConnection();
 
-			String query = "INSERT INTO Products (name, type, description, quantity, threshold, price,  supplier)" +
+		String query = "INSERT INTO Products (name, type, description, quantity, threshold, price,  supplier)" +
 				" 		VALUES ( '" + name + "','" + type + "','" + description + "', '" + quantity + "','" + threshold + "'" + ",'" + price + "'" + ",'" + supplier + "')";
 
-			//System.out.println(query);
+		//System.out.println(query);
 
 
-			PreparedStatement ps = null;
-			ResultSet rs = null;
+		PreparedStatement ps = null;
+		ResultSet rs = null;
 
-			try {
-				ps = conn.prepareStatement(query);
-				ps.executeUpdate();
-	
-			} catch (SQLException e) {
-				System.out.println("SQLException: ");
-				e.printStackTrace();
-				throw new RuntimeException(e);
-			}
-			System.out.println("'" + name + "' sucsessfully added to the inventory.");
-			ConnectionFactory.closeConnection(conn, ps, rs);
+		try {
+			ps = conn.prepareStatement(query);
+			ps.executeUpdate();
+
+		} catch (SQLException e) {
+			System.out.println("SQLException: ");
+			e.printStackTrace();
+			throw new RuntimeException(e);
 		}
+		//System.out.println("'" + name + "' sucsessfully added to the inventory.");
+		ConnectionFactory.closeConnection(conn, ps, rs);
+
+
 	}
 
 	public static void removeProduct(Product p) {
@@ -281,7 +291,7 @@ public class Product {
 			e.printStackTrace();
 			throw new RuntimeException(e);
 		}
-		System.out.println("'" + p.getName() + "' sucsessfully removed from the inventory.");
+		//System.out.println("'" + p.getName() + "' sucsessfully removed from the inventory.");
 		ConnectionFactory.closeConnection(conn, ps, rs);
 		
 	}
@@ -401,32 +411,7 @@ public class Product {
 			e.printStackTrace();
 			throw new RuntimeException(e);
 		}
-		System.out.println("'" + p.getName() + "' sucsessfully repriced in the inventory.");
-		ConnectionFactory.closeConnection(conn, ps, rs);
-		
-	}
-	
-	public static void updateType(Product p, String type) {
-		Connection conn = ConnectionFactory.makeConnection();
-
-		String query = "UPDATE Products SET type = " + type + " WHERE id = \"" + p.getId() + "\"";
-
-
-		//System.out.println(query);
-
-		PreparedStatement ps = null;
-		ResultSet rs = null;
-
-		try {
-			ps = conn.prepareStatement(query);
-			ps.executeUpdate();
-
-		} catch (SQLException e) {
-			System.out.println("SQLException: ");
-			e.printStackTrace();
-			throw new RuntimeException(e);
-		}
-		System.out.println("'" + p.getName() + "' type sucsessfully changed in the inventory.");
+		System.out.println("'" + p.getName() + "' sucsessfully reprice in the inventory.");
 		ConnectionFactory.closeConnection(conn, ps, rs);
 		
 	}
