@@ -401,7 +401,32 @@ public class Product {
 			e.printStackTrace();
 			throw new RuntimeException(e);
 		}
-		System.out.println("'" + p.getName() + "' sucsessfully reprice in the inventory.");
+		System.out.println("'" + p.getName() + "' sucsessfully repriced in the inventory.");
+		ConnectionFactory.closeConnection(conn, ps, rs);
+		
+	}
+	
+	public static void updateType(Product p, String type) {
+		Connection conn = ConnectionFactory.makeConnection();
+
+		String query = "UPDATE Products SET type = " + type + " WHERE id = \"" + p.getId() + "\"";
+
+
+		//System.out.println(query);
+
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+
+		try {
+			ps = conn.prepareStatement(query);
+			ps.executeUpdate();
+
+		} catch (SQLException e) {
+			System.out.println("SQLException: ");
+			e.printStackTrace();
+			throw new RuntimeException(e);
+		}
+		System.out.println("'" + p.getName() + "' type sucsessfully changed in the inventory.");
 		ConnectionFactory.closeConnection(conn, ps, rs);
 		
 	}

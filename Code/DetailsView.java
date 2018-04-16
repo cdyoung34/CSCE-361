@@ -74,6 +74,11 @@ public class DetailsView {
 					Product.updatePrice(p, price);
 				}
 			}
+			if(command.contains("type") && command.split(" ").length == 2)
+			{
+				String type = command.split(" ")[1];
+				Product.updateType(p, type);
+			}
 			else if(command.equals("remove"))
 			{
 				if(Account.getCurrentUser().getManagerId() == null){

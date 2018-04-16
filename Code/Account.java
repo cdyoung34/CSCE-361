@@ -102,6 +102,29 @@ public abstract class Account {
 		ConnectionFactory.closeConnection(conn, ps, rs);
 	}
 
+	public static void changeUsername(String id, String username) {
+
+		Connection conn = ConnectionFactory.makeConnection();
+
+		String query = "UPDATE Employees SET username = '" + username + "' WHERE id = \"" + id + "\"";
+
+
+		//System.out.println(query);
+
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+
+		try {
+			ps = conn.prepareStatement(query);
+			ps.executeUpdate();
+		} catch (SQLException e) {
+			System.out.println("SQLException: ");
+			e.printStackTrace();
+			throw new RuntimeException(e);
+		}
+		System.out.println("Username sucsessfully changed.");
+		ConnectionFactory.closeConnection(conn, ps, rs);
+	}
 
 
 	public static void addAccount(String firstName, String lastName, String username, String password,

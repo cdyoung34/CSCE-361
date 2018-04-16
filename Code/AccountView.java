@@ -40,6 +40,11 @@ public class AccountView {
 				String password = command.split(" ")[1];
 				Account.changePassword(Account.getCurrentUser().getId(), password);
 			}
+			if(command.contains("username") && command.split(" ").length == 2)
+			{
+				String username = command.split(" ")[1];
+				Account.changeUsername(Account.getCurrentUser().getId(), username);
+			}
 			else if(command.equals("inventory") || command.equals("back"))
 			{
 				InventoryView.displayProducts(0);
@@ -162,6 +167,11 @@ public class AccountView {
 			{
 				String password = command.split(" ")[1];
 				Account.changePassword(a.getId(), password);
+			}
+			if(command.contains("username") && command.split(" ").length == 2)
+			{
+				String username = command.split(" ")[1];
+				Account.changeUsername(a.getCurrentUser().getId(), username);
 			}
 			else if(command.equals("back") || command.equals("account"))
 			{
