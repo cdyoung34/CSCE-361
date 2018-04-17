@@ -30,43 +30,67 @@ public class managerViewController implements Initializable{
 	@FXML private Label employeeLabel;
 	@FXML private TextArea employeeText;
 
+	List<Employee> employees = Employee.getEmployees();
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
-		List<Employee> employees = Employee.getEmployees();
 		for(Employee e : employees) {
 			employeeListView.getItems().add(e.getFirstName()+", "+e.getLastName());
 		}
 		employeeListView.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
-		accountText.setText(Account.getCurrentUser().toString());
+		accountText.setText(Account.accountInfo(Account.getCurrentUser()));
 	}
-	public void backButtonPressed(){
-		
-	}
-	public void inventoryButtonPressed(ActionEvent event) throws IOException {
-		
+	public void backButtonPressed(ActionEvent event) throws IOException{
 		Parent inventoryViewParent = FXMLLoader.load(getClass().getResource("InventoryView.fxml"));
 		Scene inventoryViewScene = new Scene(inventoryViewParent,1200, 800);
 		
-		// get the stage information
 		Stage window = (Stage) ((Node)event.getSource()).getScene().getWindow();
 		
 		window.setScene(inventoryViewScene);
 		window.show();
-		
 	}
-	public void logOutPressed() {
+	public void inventoryButtonPressed(ActionEvent event) throws IOException{
+		Parent inventoryViewParent = FXMLLoader.load(getClass().getResource("InventoryView.fxml"));
+		Scene inventoryViewScene = new Scene(inventoryViewParent,1200, 800);
 		
+		Stage window = (Stage) ((Node)event.getSource()).getScene().getWindow();
+		
+		window.setScene(inventoryViewScene);
+		window.show();
+	}
+	public void logOutPressed(ActionEvent event) throws IOException {
+		Parent loginViewParent = FXMLLoader.load(getClass().getResource("LoginView.fxml"));
+		Scene loginViewScene = new Scene(loginViewParent);
+		
+		Stage window = (Stage) ((Node)event.getSource()).getScene().getWindow();
+		
+		window.setScene(loginViewScene);
+		window.show();
 	}
 	public void detailPressed() {
-		
+		Employee e = findEmployee((String) employeeListView.getSelectionModel().getSelectedItem());
+		this.employeeLabel.setText("Employee: " + e.getFirstName() + " "+e.getLastName());
+		this.employeeText.setText(Account.accountInfo(e));
+	}
+	
+	public Employee findEmployee(String username) {
+		for(Employee e:employees) {
+			if((e.getFirstName()+", "+e.getLastName()).equals(username)) {
+				return e;
+			}
+		}
+		return null;
 	}
 	public void addEmployeePressed() {
+		
+	}
+	public void editEmployeePressed() {
 		
 	}
 	public void deleteEmployeePressed() {
 		
 	}
 	public void changePassPressed() {
+		
 		
 	}
 }
