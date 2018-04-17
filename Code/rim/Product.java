@@ -160,6 +160,7 @@ public class Product {
 		ConnectionFactory.closeConnection(conn, ps, rs);
 		return products;
 	}
+	// TODO: Should change quantity instead of sum the quantity with the input
 	//number should be pass as positive or negative as need be
 	public static void updateQuantity(String id, int number){
 		//System.out.println(number);
@@ -246,7 +247,10 @@ public class Product {
 
 	public static void addProduct(String name, String type, String description , int quantity, int threshold, double price, String supplier) {
 		Connection conn = ConnectionFactory.makeConnection();
-
+		name = name.replace("'", "\'");
+		type = type.replace("'", "\'");
+		description = description.replace("'", "\'");
+		supplier = supplier.replace("'", "\'");
 		String query = "INSERT INTO Products (name, type, description, quantity, threshold, price,  supplier)" +
 				" 		VALUES ( '" + name + "','" + type + "','" + description + "', '" + quantity + "','" + threshold + "'" + ",'" + price + "'" + ",'" + supplier + "')";
 
