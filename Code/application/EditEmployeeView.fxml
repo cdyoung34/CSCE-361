@@ -33,7 +33,7 @@
          <children>
             <HBox layoutY="18.0" prefHeight="40.0" prefWidth="390.0">
                <children>
-                  <TextField fx:id="userNameField" prefHeight="30.0" prefWidth="200.0">
+                  <TextField fx:id="newNameField" prefHeight="30.0" prefWidth="200.0">
                      <HBox.margin>
                         <Insets left="10.0" top="5.0" />
                      </HBox.margin>

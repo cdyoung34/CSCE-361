@@ -8,7 +8,6 @@ import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -44,7 +43,7 @@ public class managerViewController implements Initializable{
 	}
 	public void backButtonPressed(ActionEvent event) throws IOException{
 		Parent inventoryViewParent = FXMLLoader.load(getClass().getResource("InventoryView.fxml"));
-		Scene inventoryViewScene = new Scene(inventoryViewParent,1200, 800);
+		Scene inventoryViewScene = new Scene(inventoryViewParent,800, 500);
 		
 		Stage window = (Stage) ((Node)event.getSource()).getScene().getWindow();
 		
