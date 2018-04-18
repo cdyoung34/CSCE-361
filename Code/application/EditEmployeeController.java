@@ -18,27 +18,44 @@ import javafx.scene.control.TextField;
 import rim.Account;
 import rim.ConnectionFactory;
 import rim.Employee;
-public class updatePassController implements Initializable{
+
+public class EditEmployeeController implements Initializable{
 	@FXML private PasswordField passField;
-	@FXML private TextField newPassField;
-	@FXML private Label credential, newPassLabel;
+	@FXML private TextField newPassField, newNameField;
+	@FXML private Label credential;
 	
+	private String id="";
 	List<Employee> employees = Employee.getEmployees();
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 		credential.setText("");
 	}
 	
-	public void updateButtonPressed(ActionEvent event) throws IOException {
+	public void updateEmployeePass(ActionEvent event) throws IOException {
 		if (checkPassword(Account.getCurrentUser().getUserName(), passField.getText())) {
-			Account.changePassword(Account.getCurrentUser().getId(), newPassField.getText());
-			credential.setText("Successed!");
+			String newPass=newPassField.getText();
+			System.out.println(newPass);
+			Account.changePassword(id, newPass);
+			credential.setText("Update Successed!");
 		}
 		else {
 			credential.setText("Invalid credentials!");
 		}
 	}
-
+	public void updateEmployeeName(ActionEvent event) throws IOException {
+		if (checkPassword(Account.getCurrentUser().getUserName(), passField.getText())) {
+			String newName=newNameField.getText();
+			System.out.println(newName);
+			Account.changeUsername(id, newNameField.getText());;
+			credential.setText("Update Successed!");
+		}
+		else {
+			credential.setText("Invalid credentials!");
+		}
+	}
+	public void setId(String id) {
+		this.id=id;
+	}
 	private static boolean checkPassword(String username, String password) {
 
 		String dataPassword = null;
