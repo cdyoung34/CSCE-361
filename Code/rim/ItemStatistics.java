@@ -129,7 +129,7 @@ public class ItemStatistics {
 	 * monthNum is represented as 01-12 corresponding to the month
 	 * Operates under the premise that dates are stored as XXXX-XX-XX year-month-day in database 
 	 */
-	private List<Sale> getSales (Product product, String monthNum) {
+	private static List<Sale> getSales (Product product, String monthNum) {
 		
 		
 		Connection conn = ConnectionFactory.makeConnection();
@@ -161,7 +161,7 @@ public class ItemStatistics {
 				double tax = rs.getDouble("s.sale_tax");
 				int quantity = rs.getInt("s.quantity_sold");
 				
-				if(date.contains("-" + this.monthNum + "-")) {
+				if(date.contains("-" + monthNum + "-")) {
 					Sale sale = new Sale(saleId, date, productId, name, totalSale, tax, quantity);
 					sales.add(sale);
 				}
@@ -176,10 +176,22 @@ public class ItemStatistics {
 				
 	}
 	
+	public List<Sale> getSales() {
+		return sales;
+	}
+
+	public String getMonthNum() {
+		return monthNum;
+	}
+
+	public String getProductName() {
+		return productName;
+	}
+
 	/**
 	 * Coverts name of month to corresponding number from 01 to 12
 	 */
-	private String convertMonth(String month) {
+	private static String convertMonth(String month) {
 		switch (month.toUpperCase()) {
 			case "JANUARY" : return "01";
 			case "FEBRURARY" : return "02";
