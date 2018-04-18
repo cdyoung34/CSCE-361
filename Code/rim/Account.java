@@ -154,7 +154,24 @@ public abstract class Account {
 
 		}
 	}
+	public static String accountInfo(Account a) {
+		String str="";
+		String role = "Employee";
+		str +="******************************************************************************\n"
+				+ "        Account Details: " + a.getFirstName() +"\n"
+				+ "******************************************************************************\n";
+		str += "First Name: " + a.getFirstName() + "   Last Name: " + a.getLastName()+"\n";
 
+		if(!(a.getManagerId() == null)){
+			role = "Manager";
+			str+="Username: " + a.getUserName() + "   Manager Id: " + a.getManagerId()+"\n";
+		}
+		else {
+			str+="Username: " + a.getUserName() + "   Employee Id: " + a.getId()+"\n";
+		}
+		str+="Role :" + role;
+		return str;
+	}
 }
 
 
