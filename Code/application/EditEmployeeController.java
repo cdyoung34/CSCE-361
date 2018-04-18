@@ -19,58 +19,71 @@ import rim.Account;
 import rim.ConnectionFactory;
 import rim.Employee;
 
-public class EditEmployeeController implements Initializable{
-	@FXML private PasswordField passField;
-	@FXML private TextField newPassField, newNameField;
-	@FXML private Label credential;
-	
-	private String id="";
+public class EditEmployeeController implements Initializable {
+	@FXML
+	private PasswordField passField;
+	@FXML
+	private TextField newPassField;
+	@FXML
+	private TextField newNameField;
+	@FXML
+	private Label credential;
+
+	private String id = "";
 	List<Employee> employees = Employee.getEmployees();
+
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 		credential.setText("");
 	}
-	
+
 	public void updateEmployeePass(ActionEvent event) throws IOException {
 		if (checkPassword(Account.getCurrentUser().getUserName(), passField.getText())) {
-			String newPass=newPassField.getText();
-			System.out.println(newPass);
-			Account.changePassword(id, newPass);
-			credential.setText("Update Successed!");
-		}
-		else {
+			if (newPassField.getText().equals("")) {
+				String newPass = newPassField.getText();
+				System.out.println(newPass);
+				Account.changePassword(id, newPass);
+				credential.setText("Update Successed!");
+			}
+			else {
+				credential.setText("No password enterd");
+			}
+		} else {
 			credential.setText("Invalid credentials!");
 		}
 	}
+
 	public void updateEmployeeName(ActionEvent event) throws IOException {
 		if (checkPassword(Account.getCurrentUser().getUserName(), passField.getText())) {
-			String newName=newNameField.getText();
-			System.out.println(newName);
-			Account.changeUsername(id, newNameField.getText());;
-			credential.setText("Update Successed!");
-		}
-		else {
+			if (newNameField.getText().equals("")) {
+				System.out.println(newNameField.getText());
+				String newName = newNameField.getText();
+				System.out.println(newName);
+				Account.changeUsername(id, newName);
+				;
+				credential.setText("Update Successed!");
+			} else {
+				credential.setText("No name entered");
+			}
+		} else {
 			credential.setText("Invalid credentials!");
 		}
 	}
+
 	public void setId(String id) {
-		this.id=id;
+		this.id = id;
 	}
+
 	private static boolean checkPassword(String username, String password) {
 
 		String dataPassword = null;
 		Connection conn = ConnectionFactory.makeConnection();
 
-		String query = "SELECT e.id AS id, " +
-				" 		e.first_name AS firstName, " +
-				"       e.last_name AS lastName, " + 
-				"       e.user_name AS userName, " +
-				"       e.password AS password " +
-				"FROM Employees e WHERE user_name = '" + username + "'";
+		String query = "SELECT e.id AS id, " + " 		e.first_name AS firstName, "
+				+ "       e.last_name AS lastName, " + "       e.user_name AS userName, "
+				+ "       e.password AS password " + "FROM Employees e WHERE user_name = '" + username + "'";
 
-		
-		//System.out.println(query);
-
+		// System.out.println(query);
 
 		PreparedStatement ps = null;
 		ResultSet rs = null;
@@ -78,9 +91,9 @@ public class EditEmployeeController implements Initializable{
 		try {
 			ps = conn.prepareStatement(query);
 			rs = ps.executeQuery();
-			while(rs.next()) {
-				dataPassword       = rs.getString("password");
-				//System.out.println(dataPassword);
+			while (rs.next()) {
+				dataPassword = rs.getString("password");
+				// System.out.println(dataPassword);
 
 			}
 		} catch (SQLException e) {
@@ -89,16 +102,11 @@ public class EditEmployeeController implements Initializable{
 			throw new RuntimeException(e);
 		}
 		ConnectionFactory.closeConnection(conn, ps, rs);
-		if(dataPassword == null)
-		{
+		if (dataPassword == null) {
 			return false;
-		}
-		else if(dataPassword.equals(password))
-		{
+		} else if (dataPassword.equals(password)) {
 			return true;
-		}
-		else
-		{
+		} else {
 			return false;
 		}
 
