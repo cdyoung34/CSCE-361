@@ -88,7 +88,7 @@ public class managerViewController implements Initializable{
 		String id = findEmployee((String) employeeListView.getSelectionModel().getSelectedItem()).getId();
 
 		FXMLLoader Loader = new FXMLLoader();
-		Loader.setLocation(getClass().getResource("updatePass.fxml"));
+		Loader.setLocation(getClass().getResource("EditEmployeeView.fxml"));
 		try {
 			Loader.load();
 		} catch (IOException ex) {
@@ -96,15 +96,14 @@ public class managerViewController implements Initializable{
 			
 		}
 
-		updatePassController updatePassParent = Loader.getController();
-		updatePassParent.setId(id);
-		updatePassParent.setConditionLabel();
+		EditEmployeeController EditEmployeeParent = Loader.getController();
+		EditEmployeeParent.setId(id);
 
 		Parent p = Loader.getRoot();
-		Scene updatePassViewScene = new Scene(p, 390, 122);
+		Scene EditEmployeeViewScene = new Scene(p, 392, 192);
 		
 		Stage window = new Stage();
-		window.setScene(updatePassViewScene);
+		window.setScene(EditEmployeeViewScene);
 		window.setResizable(false);
 		window.showAndWait();
 	}
