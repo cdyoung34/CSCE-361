@@ -89,8 +89,13 @@ public class managerViewController implements Initializable{
 	public void deleteEmployeePressed() {
 		
 	}
-	public void changePassPressed() {
+	public void changePassPressed(ActionEvent event) throws IOException {		
+		Parent updatePassParent = FXMLLoader.load(getClass().getResource("updatePass.fxml"));
+		Scene updatePassViewScene = new Scene(updatePassParent,308, 122);
 		
+		Stage window = new Stage();
 		
+		window.setScene(updatePassViewScene);
+		window.showAndWait();
 	}
 }
