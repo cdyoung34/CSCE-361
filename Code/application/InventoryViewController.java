@@ -126,12 +126,13 @@ public class InventoryViewController implements Initializable {
 	
 	public void toAccount(ActionEvent event) throws IOException{
 		Parent managerViewParent = FXMLLoader.load(getClass().getResource("managerView.fxml"));
-		Scene managerScene = new Scene(managerViewParent);
+		Scene managerScene = new Scene(managerViewParent,680,470);
 		
 		// get the stage information
 		Stage window = (Stage) ((Node)event.getSource()).getScene().getWindow();
 		
 		window.setScene(managerScene);
+		window.setResizable(false);
 		window.show();
 	}
 	public void toStatistic(ActionEvent event) throws IOException{
