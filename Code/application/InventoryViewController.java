@@ -18,14 +18,21 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.SelectionMode;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
 import javafx.scene.control.TextArea;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
 import rim.Cart;
+import rim.CartItem;
 import rim.Product;
 
 public class InventoryViewController implements Initializable {
 	
-	@FXML private ListView listView;
+	@FXML private TableView inventoryTable;
+	@FXML private TableColumn nameColumn;
+	@FXML private TableColumn priceColumn;
+	@FXML private TableColumn stockColumn;
 	@FXML private TextArea textArea;
 	@FXML private Label detailsLabel;
 	@FXML private ListView cartList;
@@ -39,11 +46,25 @@ public class InventoryViewController implements Initializable {
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
+		priceSum=0;
 		List<Product> products = Product.getProducts();
+		nameColumn.setCellValueFactory(new PropertyValueFactory<>("name"));
+		priceColumn.setCellValueFactory(new PropertyValueFactory<>("price"));
+		stockColumn.setCellValueFactory(new PropertyValueFactory<>("quantity"));
+		
 		for(Product p : products) {
-			listView.getItems().add(p.getName());
+			inventoryTable.getItems().add(p);
+//			listView.getItems().add(p.getName());
 		}
-		listView.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
+		cartList.getItems().clear();
+		for(CartItem item:Cart.getCart()) {
+			cartList.getItems().add(item.getP().getName() +"("+item.getSellingQuantity()+")"+ " - $" + String.format("%.2f", item.getP().getPrice()*item.getSellingQuantity()));
+			this.priceSum += item.getP().getPrice()*item.getSellingQuantity();
+			System.out.println(item);
+		}
+		this.cartLabel.setText(String.format("Cart Total: $%.2f", priceSum));
+		
+		inventoryTable.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
 		cartList.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
 	}
 	
@@ -51,22 +72,29 @@ public class InventoryViewController implements Initializable {
 	 * display details in textArea
 	 */
 	public void detailsButtonPressed() {
-		Product p = findProduct((String) listView.getSelectionModel().getSelectedItem());
+		Product p = (Product) inventoryTable.getSelectionModel().getSelectedItem();
 		this.detailsLabel.setText("Item: " + p.getName());
 		this.textArea.setText(p.formatItemDetails());
 	}
 	
 	
 	public void addToCartButtonPressed() {
-		Product p = findProduct((String) listView.getSelectionModel().getSelectedItem());
+		this.priceSum=0;
+		cartList.getItems().clear();
+		Product p = (Product) inventoryTable.getSelectionModel().getSelectedItem();
+		Cart.addToCart(p, 1);
 		// add to diplay list
-		cartList.getItems().add(p.getName() + " - $" + String.format("%.2f", p.getPrice()));
-		this.priceSum += p.getPrice();
+		for(CartItem item:Cart.getCart()) {
+			cartList.getItems().add(item.getP().getName() +"("+item.getSellingQuantity()+")"+ " - $" + String.format("%.2f", item.getP().getPrice()*item.getSellingQuantity()));
+			System.out.println(item);
+			this.priceSum += item.getP().getPrice()*item.getSellingQuantity();
+		}
 		this.cartLabel.setText(String.format("Cart Total: $%.2f", priceSum));
 	}
 	
 	public void removeFromCartButtonPressed() {
-		Product p = findProduct((String) listView.getSelectionModel().getSelectedItem());
+		Product p = findProduct((String) cartList.getSelectionModel().getSelectedItem());
+		Cart.removeFromCart(p.getName());
 		cartList.getItems().remove(cartList.getSelectionModel().getSelectedIndex());
 		this.priceSum -= p.getPrice();
 		this.cartLabel.setText(String.format("Cart Total: $%.2f", priceSum));
@@ -74,6 +102,7 @@ public class InventoryViewController implements Initializable {
 	
 	public void clearCartButtonPressed() {
 		cartList.getItems().clear();
+		Cart.clearCart();
 		this.priceSum = 0;
 		this.cartLabel.setText(String.format("Cart Total: $%.2f", priceSum));
 	}
@@ -84,7 +113,7 @@ public class InventoryViewController implements Initializable {
 		for(int i = 0; i < os.size(); i++) {
 			String temp = (String) os.get(i);
 			temp = temp.substring(0, temp.indexOf("-") - 1);
-			Cart.addToCart(findProduct(temp), 1);
+//			Cart.addToCart(findProduct(temp), 1);
 			checkoutCart.add(findProduct(temp));
 		}
 		Parent loginViewParent = FXMLLoader.load(getClass().getResource("Receipt.fxml"));
@@ -136,14 +165,7 @@ public class InventoryViewController implements Initializable {
 		window.show();
 	}
 	public void toStatistic(ActionEvent event) throws IOException{
-		Parent statisticsViewParent = FXMLLoader.load(getClass().getResource("StatisticsView.fxml"));
-		Scene statisticsScene = new Scene(statisticsViewParent);
 		
-		// get the stage information
-		Stage window = (Stage) ((Node)event.getSource()).getScene().getWindow();
-		window.setScene(statisticsScene);
-		window.setResizable(true);
-		window.show();
 	}
 	
 	/**
