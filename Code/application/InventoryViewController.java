@@ -136,7 +136,15 @@ public class InventoryViewController implements Initializable {
 		window.show();
 	}
 	public void toStatistic(ActionEvent event) throws IOException{
+		Parent statisticsViewParent = FXMLLoader.load(getClass().getResource("StatisticsView.fxml"));
+		Scene statisticsScene = new Scene(statisticsViewParent,680,470);
 		
+		// get the stage information
+		Stage window = (Stage) ((Node)event.getSource()).getScene().getWindow();
+		
+		window.setScene(statisticsScene);
+		window.setResizable(true);
+		window.show();
 	}
 	
 	/**
