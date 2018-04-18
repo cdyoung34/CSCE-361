@@ -11,9 +11,9 @@
 <?import javafx.scene.layout.Region?>
 <?import javafx.scene.layout.VBox?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="122.0" prefWidth="308.0" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.updatePassController">
+<BorderPane maxHeight="117.0" maxWidth="369.0" minHeight="117.0" minWidth="369.0" prefHeight="117.0" prefWidth="369.0" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.updatePassController">
    <top>
-      <VBox prefHeight="66.0" prefWidth="297.0" BorderPane.alignment="CENTER">
+      <VBox prefHeight="75.0" prefWidth="543.0" BorderPane.alignment="CENTER">
          <children>
             <MenuBar />
             <Label prefHeight="17.0" prefWidth="169.0" text="Your password">
@@ -23,7 +23,7 @@
             </Label>
             <HBox spacing="10.0">
                <children>
-                  <PasswordField fx:id="passField" prefHeight="25.0" prefWidth="171.0">
+                  <PasswordField fx:id="passField" prefHeight="25.0" prefWidth="223.0">
                      <HBox.margin>
                         <Insets left="5.0" />
                      </HBox.margin>
@@ -35,7 +35,7 @@
                   <Insets bottom="8.0" left="8.0" right="8.0" top="8.0" />
                </VBox.margin>
             </HBox>
-            <Label layoutX="25.0" layoutY="10.0" prefHeight="17.0" prefWidth="169.0" text="Enter your new password">
+            <Label fx:id="newPassLabel" layoutX="25.0" layoutY="10.0" prefHeight="17.0" prefWidth="220.0" text="Enter your new password">
                <VBox.margin>
                   <Insets left="15.0" />
                </VBox.margin>
@@ -46,12 +46,12 @@
    <bottom>
       <HBox prefHeight="25.0" prefWidth="337.0" spacing="10.0" BorderPane.alignment="BOTTOM_LEFT">
          <children>
-            <TextField fx:id="newPassField" prefHeight="25.0" prefWidth="171.0">
+            <TextField fx:id="newPassField" prefHeight="25.0" prefWidth="222.0">
                <HBox.margin>
                   <Insets left="5.0" top="5.0" />
                </HBox.margin>
             </TextField>
-            <Button layoutX="308.0" layoutY="10.0" mnemonicParsing="false" onAction="#updateButtonPressed" prefHeight="25.0" prefWidth="54.0" text="update">
+            <Button layoutX="308.0" layoutY="10.0" mnemonicParsing="false" onAction="#updateButtonPressed" prefHeight="25.0" prefWidth="79.0" text="update">
                <HBox.margin>
                   <Insets bottom="5.0" top="5.0" />
                </HBox.margin>
