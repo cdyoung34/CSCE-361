@@ -80,14 +80,30 @@ public class managerViewController implements Initializable{
 		}
 		return null;
 	}
-	public void addEmployeePressed() {
-		
-	}
+
 	public void editEmployeePressed() {
+		String id = findEmployee((String) employeeListView.getSelectionModel().getSelectedItem()).getId();
+
+		FXMLLoader Loader = new FXMLLoader();
+		Loader.setLocation(getClass().getResource("updatePass.fxml"));
+		try {
+			Loader.load();
+		} catch (IOException ex) {
+			Logger.getLogger(managerViewController.class.getName()).log(Level.SEVERE, null, ex);
+			
+		}
+
+		updatePassController updatePassParent = Loader.getController();
+		updatePassParent.setId(id);
+		updatePassParent.setConditionLabel();
+
+		Parent p = Loader.getRoot();
+		Scene updatePassViewScene = new Scene(p, 390, 122);
 		
-	}
-	public void deleteEmployeePressed() {
-		
+		Stage window = new Stage();
+		window.setScene(updatePassViewScene);
+		window.setResizable(false);
+		window.showAndWait();
 	}
 	public void changePassPressed(ActionEvent event) throws IOException {		
 		Parent updatePassParent = FXMLLoader.load(getClass().getResource("updatePass.fxml"));
@@ -95,7 +111,14 @@ public class managerViewController implements Initializable{
 		
 		Stage window = new Stage();
 		
-		window.setScene(updatePassViewScene);
+		window.setScene(updatePassViewScene);		
+		window.setResizable(false);
 		window.showAndWait();
+	}
+	public void deleteEmployeePressed() {
+		
+	}
+	public void addEmployeePressed() {
+		
 	}
 }
