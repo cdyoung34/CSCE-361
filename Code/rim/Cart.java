@@ -11,7 +11,6 @@ public class Cart {
 	static List<CartItem> cart = new ArrayList<CartItem>();
 	static double totalSale = 0;
 	static double salesTax;
-	static boolean check = true;
 	
 	public static void addToCart(Product p, int quantity) {
 		int SellingQuantity = quantity;
@@ -48,7 +47,13 @@ public class Cart {
 	public static List<CartItem> getCart() {
 		return cart;
 	}
-
+	public static void removeFromCart(String name) {
+		for (CartItem x : cart) {
+			if (x.getP().getName().equals(name)) {
+				cart.remove(x);
+			}
+		}
+	}
 	public static void clearCart() {
 		totalSale = 0;
 		salesTax = 0;
@@ -57,18 +62,18 @@ public class Cart {
 	public static String formatDetails() {
 		String str = "";
 		for (CartItem p : cart) {//check items in stock before process to check out
-			String price = String.format("$%.2f", p.getP().getPrice());
-			String tax = "" + p.getP().getPrice() * .07;
-			str += String.format("%s: %s\n", p.getP().getName(), price);
+			String price = String.format("%.2f", p.getP().getPrice()*p.getSellingQuantity());
+			String tax = "" + p.getP().getPrice()*p.getSellingQuantity() * .07;
+			str += String.format("%s: $%s\n", p.getP().getName(), price);
+			salesTax += Double.parseDouble(tax);
+			totalSale += Double.parseDouble(price);
 		}
 		str += String.format("%s%s\n", "Tax: ", String.format("$%.2f", salesTax));
 		str += String.format("Total: $%.2f", totalSale + salesTax);
 		return str;
 	}
 	public static boolean checkOut() {
-
-		
-		
+		boolean check = true;
 		if (cart.isEmpty()) {
 			//System.out.println("Your cart is empty");
 			return false;
@@ -85,13 +90,14 @@ public class Cart {
 			if (check) {
 				int saleId=getMaxSaleId()+1;
 				for (CartItem p : cart) {
-					totalSale += purchaseProduct(p,Integer.toString(saleId));
+					purchaseProduct(p,Integer.toString(saleId));
 				}
 
-				salesTax = totalSale * .07;
+//				salesTax = totalSale * .07;
 				//System.out.println(saleId);
 				//System.out.printf("Tax: %36s%.2f \nTotal: %34s%.2f \n", "$", salesTax, "$", totalSale + salesTax);
 				//cart.clear();
+				Cart.clearCart();
 				return true;
 			}
 			else{
@@ -118,7 +124,7 @@ public class Cart {
 
 	public static boolean checkItem(Product p, int quantityToBuy) {
 		int quantity = 0;
-
+		
 		Connection conn = ConnectionFactory.makeConnection();
 		String query = "SELECT p.quantity AS quantity " + "FROM Products p WHERE id = ?";
 
@@ -144,7 +150,7 @@ public class Cart {
 		if (quantity < quantityToBuy && quantity > 0) {
 			//System.out.println("Item " + p.getName() + " does not have enough quantity in stock currently");
 			return false;
-		} else if (quantity == -1) {
+		} else if (quantity < 0) {
 			//System.out.println("Item " + p.getName() + " had been removed from stock");
 			return false;
 		} else {
