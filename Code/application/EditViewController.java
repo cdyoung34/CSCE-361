@@ -91,7 +91,11 @@ public class EditViewController implements Initializable{
 			Product.addProduct(pName,pType,pDes,pQuan,pThre,pPrice,pSup);
 			listView.getItems().add(pName);
 		} else if (this.updateMode) {
-			// TODO: add functionality for updating an item
+			// TODO: finish functionality for updating an item
+			Product product = findProduct((String) listView.getSelectionModel().getSelectedItem());
+			Product.updatePrice(product, pPrice);
+			Product.updateQuantity(product.getId(), pQuan);
+			Product.updateDescription(product, pDes);
 		}
 		
 		this.clearTextFields();
@@ -133,12 +137,18 @@ public class EditViewController implements Initializable{
 		
 		Product p = findProduct((String) listView.getSelectionModel().getSelectedItem());
 		productName.setText(p.getName());
+		//System.out.println("Name: " +p.getName());
 		type.setText(p.getType());
+		//System.out.println("Type: " + p.getType());
 		supplier.setText(p.getSupplier());
+		//System.out.println("Supplier: " + p.getSupplier());
 		quantity.setText("" + p.getQuantity());
+		//System.out.println("Price: " + p.getPrice());
 		price.setText("" + p.getPrice());
+		//System.out.println("Description: " + p.getDescription());
 		description.setText(p.getDescription());
-		threshold.setText("" + p.getType());
+		//System.out.println("Threshold: " + p.getThreshold());
+		threshold.setText("" + p.getThreshold());
 		
 		this.updateMode = true;
 		this.addMode = false;
