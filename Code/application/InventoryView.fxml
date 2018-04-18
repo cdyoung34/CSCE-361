@@ -43,7 +43,7 @@
                   <Button mnemonicParsing="false" text="Search" />
                   <Region HBox.hgrow="ALWAYS" />
                   <Button mnemonicParsing="false" onAction="#toAccount" text="Account" />
-                  <Button mnemonicParsing="false" onAction="#toStatistic" text="Statistic" />
+                  <Button mnemonicParsing="false" onAction="#toStatistic" text="Inventory Data" />
                   <Button layoutX="402.0" layoutY="10.0" mnemonicParsing="false" onAction="#editModePressed" text="Edit Inventory" />
                   <Button layoutX="308.0" layoutY="10.0" mnemonicParsing="false" onAction="#returnToLogin" text="Logout" />
                </children>

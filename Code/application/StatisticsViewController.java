@@ -23,6 +23,7 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
+import rim.InventoryStatistics;
 import rim.ItemStatistics;
 import rim.Product;
 import rim.Sale;
@@ -58,12 +59,42 @@ public class StatisticsViewController implements Initializable {
 	}
 	
 	public void getDataPressed() {
+		// get product based on name in list
 		String pName = (String) listView.getSelectionModel().getSelectedItem();
+		ItemStatistics is = null;
+		InventoryStatistics inv = null;
 		if (pName != null) {
 			product = Product.findProduct(pName);
 		}
 		
-		month = (String) comboBox.getSelectionModel().getSelectedItem();
+		
+		// all items summary
+		if( itemCheck.isSelected()) {
+			// all months summary
+			if(monthCheck.isSelected()) {
+				comboBox.getSelectionModel().clearSelection();
+				inv = new InventoryStatistics(Product.getProducts());
+				totalSaleLabel.setText(String.format("Total Sale: $%.2f", inv.calculateTotalSales()));
+				quantitySoldLabel.setText("Quantity Sold: " + inv.calculateQuantitySold());
+			// particular month
+			} else {
+				month = (String) comboBox.getSelectionModel().getSelectedItem();
+				inv = new InventoryStatistics(Product.getProducts(), month);
+				totalSaleLabel.setText(String.format("Total Sale: $%.2f", inv.calculateTotalSales(month)));
+				quantitySoldLabel.setText("Quantity Sold: " + inv.calculateQuantitySold(month));
+			}
+
+			return;
+			
+		}
+		
+		if (monthCheck.isSelected()) {
+			comboBox.getSelectionModel().clearSelection();
+			is = new ItemStatistics(product);
+		} else {
+			month = (String) comboBox.getSelectionModel().getSelectedItem();
+			is = new ItemStatistics(product, month);
+		}
 		
 		// fill table with data
 		// PropertyValueFactory string corresponds to the members in the Sale class
@@ -71,7 +102,7 @@ public class StatisticsViewController implements Initializable {
 		quantityColumn.setCellValueFactory(new PropertyValueFactory<Sale,String>("quantity"));
 		saleColumn.setCellValueFactory(new PropertyValueFactory<Sale,String>("totalSale"));
 		idColumn.setCellValueFactory(new PropertyValueFactory<Sale,String>("saleId"));
-		ObservableList os = getSales();
+		ObservableList os = getSales(is);
 		tableView.setItems(os);
 		
 		
@@ -82,8 +113,7 @@ public class StatisticsViewController implements Initializable {
 	 * stores table data in ObservableList
 	 * @return
 	 */
-	private ObservableList<Sale> getSales() {
-		ItemStatistics is = new ItemStatistics(product, month);
+	private ObservableList<Sale> getSales(ItemStatistics is) {
 		List<Sale> sales = is.getSales();
 		
 		ObservableList<Sale> os = FXCollections.observableArrayList();

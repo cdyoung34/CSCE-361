@@ -111,7 +111,7 @@
                         <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                      </VBox.margin>
                   </Label>
-                  <ComboBox fx:id="comboBox" prefWidth="150.0" promptText="Month">
+                  <ComboBox fx:id="comboBox" prefWidth="150.0" promptText="None Selected">
                      <VBox.margin>
                         <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                      </VBox.margin>
@@ -139,10 +139,13 @@
    <right>
       <VBox maxHeight="800.0" maxWidth="800.0" minWidth="500.0" prefHeight="386.0" prefWidth="566.0" BorderPane.alignment="CENTER">
          <children>
-            <VBox prefHeight="200.0" prefWidth="247.0">
+            <VBox prefHeight="312.0" prefWidth="566.0">
                <children>
-                  <Label text="Data Report" />
-                  <TableView fx:id="tableView" prefHeight="200.0" prefWidth="200.0">
+                  <Label text="Data Report">
+                     <VBox.margin>
+                        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                     </VBox.margin></Label>
+                  <TableView fx:id="tableView" prefHeight="183.0" prefWidth="546.0">
                     <columns>
                       <TableColumn fx:id="dateColumn" minWidth="100.0" prefWidth="100.0" text="Date" />
                       <TableColumn fx:id="quantityColumn" minWidth="100.0" prefWidth="100.0" text="Quantity Sold" />
