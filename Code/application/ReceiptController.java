@@ -30,8 +30,10 @@ public class ReceiptController implements Initializable{
 	public void initialize(URL location, ResourceBundle resources) {
 		String str = "";
 		str += Cart.formatDetails();
+		if(!Cart.checkOut()) {			
+			str = "check out fail.";
+		}
 		textArea.setText(str);
-		Cart.clearCart();
 	}
 
 	/**
@@ -53,7 +55,7 @@ public class ReceiptController implements Initializable{
 	
 	public void returnToInventory(ActionEvent event) throws IOException {
 		Parent inventoryViewParent = FXMLLoader.load(getClass().getResource("InventoryView.fxml"));
-		Scene inventoryViewScene = new Scene(inventoryViewParent,1200, 800);
+		Scene inventoryViewScene = new Scene(inventoryViewParent,800, 500);
 		
 		// get the stage information
 		Stage window = (Stage) ((Node)event.getSource()).getScene().getWindow();
