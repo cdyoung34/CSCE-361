@@ -21,8 +21,10 @@ import rim.Employee;
 public class updatePassController implements Initializable{
 	@FXML private PasswordField passField;
 	@FXML private TextField newPassField;
-	@FXML private Label credential;
-
+	@FXML private Label credential, newPassLabel;
+	
+	private String id="";
+	private String eventString=null;
 	List<Employee> employees = Employee.getEmployees();
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
@@ -31,8 +33,11 @@ public class updatePassController implements Initializable{
 	
 	public void updateButtonPressed(ActionEvent event) throws IOException {
 		if (checkPassword(Account.getCurrentUser().getUserName(), passField.getText())) {
-//			System.out.println(newPassField.getText()+" "+Account.getCurrentUser().getId());
-			Account.changePassword(Account.getCurrentUser().getId(), newPassField.getText());
+			if(id.equals("")) {
+				Account.changePassword(Account.getCurrentUser().getId(), newPassField.getText());
+			}else {
+				Account.changePassword(id, newPassField.getText());
+			}
 			credential.setText("Successed!");
 		}
 		else {
@@ -40,6 +45,12 @@ public class updatePassController implements Initializable{
 		}
 	}
 //	
+	public void setConditionLabel() {
+		newPassLabel.setText("Enter employee's new password");
+	}
+	public void setId(String id) {
+		this.id=id;
+	}
 	private static boolean checkPassword(String username, String password) {
 
 		String dataPassword = null;
