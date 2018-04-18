@@ -18,7 +18,7 @@ public class Cart {
 		boolean same = false;
 		CartItem item = new CartItem(p, SellingQuantity);
 		for (CartItem x : cart) {
-			if (x.getP() == p) {
+			if (x.getP().getName().equals(p.getName())) {
 				x.setSellingQuantity(x.getSellingQuantity() + quantity);
 				same = true;
 			}
