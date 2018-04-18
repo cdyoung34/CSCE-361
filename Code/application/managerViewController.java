@@ -107,7 +107,7 @@ public class managerViewController implements Initializable{
 	}
 	public void changePassPressed(ActionEvent event) throws IOException {		
 		Parent updatePassParent = FXMLLoader.load(getClass().getResource("updatePass.fxml"));
-		Scene updatePassViewScene = new Scene(updatePassParent,308, 122);
+		Scene updatePassViewScene = new Scene(updatePassParent,390, 122);
 		
 		Stage window = new Stage();
 		
