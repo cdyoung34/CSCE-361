@@ -106,7 +106,7 @@ public abstract class Account {
 
 		Connection conn = ConnectionFactory.makeConnection();
 
-		String query = "UPDATE Employees SET username = '" + username + "' WHERE id = \"" + id + "\"";
+		String query = "UPDATE Employees SET username = '" + user_name + "' WHERE id = \"" + id + "\"";
 
 
 		//System.out.println(query);
