@@ -188,6 +188,32 @@ public class Product {
 		}
 		ConnectionFactory.closeConnection(conn, ps, rs);
 	}
+	
+	public static void updateDescription(Product p, String str) {
+		//System.out.println(number);
+
+			Connection conn = ConnectionFactory.makeConnection();
+
+			String query = "UPDATE Products SET description = ? WHERE id = ?";
+
+
+			//System.out.println(query);
+
+			PreparedStatement ps = null;
+			ResultSet rs = null;
+
+			try {
+				ps = conn.prepareStatement(query);
+				ps.setString(1, str);
+				ps.setInt(2, Integer.parseInt(p.getId()));
+				ps.executeUpdate();
+			} catch (SQLException e) {
+				System.out.println("SQLException: ");
+				e.printStackTrace();
+				throw new RuntimeException(e);
+			}
+			ConnectionFactory.closeConnection(conn, ps, rs);
+	}
 
 	public String getId() {
 		return id;
@@ -393,6 +419,16 @@ public class Product {
 		}
 		return products;
 		
+	}
+	
+	public static Product findProduct(String productName) {
+		List<Product> products = Product.getProducts();
+		for (Product p : products) {
+			if (p.getName().equals(productName)) {
+				return p;
+			}
+		}
+		return null;
 	}
 
 	public static void updatePrice(Product p, double newPrice) {
