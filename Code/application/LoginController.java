@@ -36,7 +36,7 @@ public class LoginController implements Initializable {
 		if (checkPassword(username.getText(), password.getText())) {
 			Account.setCurrentUser(Account.accountFromUsername(username.getText()));
 			Parent inventoryViewParent = FXMLLoader.load(getClass().getResource("InventoryView.fxml"));
-			Scene inventoryViewScene = new Scene(inventoryViewParent,1200, 800);
+			Scene inventoryViewScene = new Scene(inventoryViewParent,1000, 600);
 			
 			// get the stage information
 			Stage window = (Stage) ((Node)event.getSource()).getScene().getWindow();

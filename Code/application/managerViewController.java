@@ -41,18 +41,10 @@ public class managerViewController implements Initializable{
 		employeeListView.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
 		accountText.setText(Account.accountInfo(Account.getCurrentUser()));
 	}
-	public void backButtonPressed(ActionEvent event) throws IOException{
-		Parent inventoryViewParent = FXMLLoader.load(getClass().getResource("InventoryView.fxml"));
-		Scene inventoryViewScene = new Scene(inventoryViewParent,800, 500);
-		
-		Stage window = (Stage) ((Node)event.getSource()).getScene().getWindow();
-		
-		window.setScene(inventoryViewScene);
-		window.show();
-	}
+
 	public void inventoryButtonPressed(ActionEvent event) throws IOException{
 		Parent inventoryViewParent = FXMLLoader.load(getClass().getResource("InventoryView.fxml"));
-		Scene inventoryViewScene = new Scene(inventoryViewParent,1200, 800);
+		Scene inventoryViewScene = new Scene(inventoryViewParent,1000, 600);
 		
 		Stage window = (Stage) ((Node)event.getSource()).getScene().getWindow();
 		
@@ -61,7 +53,7 @@ public class managerViewController implements Initializable{
 	}
 	public void logOutPressed(ActionEvent event) throws IOException {
 		Parent loginViewParent = FXMLLoader.load(getClass().getResource("LoginView.fxml"));
-		Scene loginViewScene = new Scene(loginViewParent);
+		Scene loginViewScene = new Scene(loginViewParent, 480, 320);
 		
 		Stage window = (Stage) ((Node)event.getSource()).getScene().getWindow();
 		

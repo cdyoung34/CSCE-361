@@ -143,7 +143,7 @@ public class InventoryViewController implements Initializable {
 	 */
 	public void returnToLogin(ActionEvent event) throws IOException{
 		Parent loginViewParent = FXMLLoader.load(getClass().getResource("LoginView.fxml"));
-		Scene loginViewScene = new Scene(loginViewParent);
+		Scene loginViewScene = new Scene(loginViewParent, 480, 320);
 		
 		// get the stage information
 		Stage window = (Stage) ((Node)event.getSource()).getScene().getWindow();
@@ -155,7 +155,7 @@ public class InventoryViewController implements Initializable {
 	
 	public void toAccount(ActionEvent event) throws IOException{
 		Parent managerViewParent = FXMLLoader.load(getClass().getResource("managerView.fxml"));
-		Scene managerScene = new Scene(managerViewParent,680,470);
+		Scene managerScene = new Scene(managerViewParent, 1000, 600);
 		
 		// get the stage information
 		Stage window = (Stage) ((Node)event.getSource()).getScene().getWindow();
@@ -165,7 +165,14 @@ public class InventoryViewController implements Initializable {
 		window.show();
 	}
 	public void toStatistic(ActionEvent event) throws IOException{
+		Parent statisticsViewParent = FXMLLoader.load(getClass().getResource("StatisticsView.fxml"));
+		Scene statisticsViewScene = new Scene(statisticsViewParent, 1000, 600);
 		
+		// get the stage information
+		Stage window = (Stage) ((Node)event.getSource()).getScene().getWindow();
+		
+		window.setScene(statisticsViewScene);
+		window.show();
 	}
 	
 	/**
@@ -173,7 +180,7 @@ public class InventoryViewController implements Initializable {
 	 */
 	public void editModePressed(ActionEvent event) throws IOException{
 		Parent editViewParent = FXMLLoader.load(getClass().getResource("EditView.fxml"));
-		Scene editViewScene = new Scene(editViewParent,1200, 800);
+		Scene editViewScene = new Scene(editViewParent,1000, 600);
 		
 		// get the stage information
 		Stage window = (Stage) ((Node)event.getSource()).getScene().getWindow();

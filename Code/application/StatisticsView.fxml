@@ -6,9 +6,6 @@
 <?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ListView?>
-<?import javafx.scene.control.Menu?>
-<?import javafx.scene.control.MenuBar?>
-<?import javafx.scene.control.MenuItem?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextField?>
@@ -19,29 +16,10 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<BorderPane maxHeight="2000.0" maxWidth="2000.0" xmlns="http://javafx.com/javafx/9.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.StatisticsViewController">
+<BorderPane maxHeight="2000.0" maxWidth="2000.0" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.StatisticsViewController">
    <top>
       <VBox BorderPane.alignment="CENTER">
          <children>
-            <MenuBar>
-              <menus>
-                <Menu mnemonicParsing="false" text="System">
-                  <items>
-                    <MenuItem mnemonicParsing="false" text="Exit" />
-                  </items>
-                </Menu>
-                <Menu mnemonicParsing="false" text="Edit">
-                  <items>
-                    <MenuItem mnemonicParsing="false" text="Edit Mode" />
-                  </items>
-                </Menu>
-                <Menu mnemonicParsing="false" text="Data">
-                  <items>
-                    <MenuItem mnemonicParsing="false" text="Statistics" />
-                  </items>
-                </Menu>
-              </menus>
-            </MenuBar>
             <HBox spacing="10.0">
                <children>
                   <TextField />
@@ -60,7 +38,7 @@
    <bottom>
       <HBox prefHeight="0.0" prefWidth="601.0" BorderPane.alignment="CENTER">
          <children>
-            <Label fx:id="credentials" text="Label" />
+            <Label fx:id="credentials" />
          </children>
          <padding>
             <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />

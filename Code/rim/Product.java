@@ -188,32 +188,6 @@ public class Product {
 		}
 		ConnectionFactory.closeConnection(conn, ps, rs);
 	}
-	
-	public static void updateDescription(Product p, String str) {
-		//System.out.println(number);
-
-			Connection conn = ConnectionFactory.makeConnection();
-
-			String query = "UPDATE Products SET description = ? WHERE id = ?";
-
-
-			//System.out.println(query);
-
-			PreparedStatement ps = null;
-			ResultSet rs = null;
-
-			try {
-				ps = conn.prepareStatement(query);
-				ps.setString(1, str);
-				ps.setInt(2, Integer.parseInt(p.getId()));
-				ps.executeUpdate();
-			} catch (SQLException e) {
-				System.out.println("SQLException: ");
-				e.printStackTrace();
-				throw new RuntimeException(e);
-			}
-			ConnectionFactory.closeConnection(conn, ps, rs);
-	}
 
 	public String getId() {
 		return id;
@@ -420,22 +394,11 @@ public class Product {
 		return products;
 		
 	}
-	
-	public static Product findProduct(String productName) {
-		List<Product> products = Product.getProducts();
-		for (Product p : products) {
-			if (p.getName().equals(productName)) {
-				return p;
-			}
-		}
-		return null;
-	}
 
 	public static void updatePrice(Product p, double newPrice) {
 		Connection conn = ConnectionFactory.makeConnection();
 
 		String query = "UPDATE Products SET price = " + newPrice + " WHERE id = \"" + p.getId() + "\"";
-
 
 		//System.out.println(query);
 
@@ -451,9 +414,64 @@ public class Product {
 			e.printStackTrace();
 			throw new RuntimeException(e);
 		}
-		System.out.println("'" + p.getName() + "' sucsessfully reprice in the inventory.");
+		System.out.println("'" + p.getName() + "' successfully reprice in the inventory.");
 		ConnectionFactory.closeConnection(conn, ps, rs);
 		
 	}
+	
+	public static void updateDescription(Product p, String newDescription) {
+		Connection conn = ConnectionFactory.makeConnection();
 
+		String query = "UPDATE Products SET description = " + newDescription + " WHERE id = \"" + p.getId() + "\"";
+
+		//System.out.println(query);
+
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+
+		try {
+			ps = conn.prepareStatement(query);
+			ps.executeUpdate();
+
+		} catch (SQLException e) {
+			System.out.println("SQLException: ");
+			e.printStackTrace();
+			throw new RuntimeException(e);
+		}
+		System.out.println("'" + p.getName() + "' successfully redescribed in the inventory.");
+		ConnectionFactory.closeConnection(conn, ps, rs);
+	}
+	
+	public static void updateType(Product p, String newType) {
+		Connection conn = ConnectionFactory.makeConnection();
+
+		String query = "UPDATE Products SET type = " + newType + " WHERE id = \"" + p.getId() + "\"";
+
+		//System.out.println(query);
+
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+
+		try {
+			ps = conn.prepareStatement(query);
+			ps.executeUpdate();
+
+		} catch (SQLException e) {
+			System.out.println("SQLException: ");
+			e.printStackTrace();
+			throw new RuntimeException(e);
+		}
+		System.out.println("'" + p.getName() + "' successfully redescribed in the inventory.");
+		ConnectionFactory.closeConnection(conn, ps, rs);
+	}
+	
+	public static Product findProduct(String productName) {
+		List<Product> products = Product.getProducts();
+		for (Product p : products) {
+			if (p.getName().equals(productName)) {
+				return p;
+			}
+		}
+		return null;
+	}
 }
