@@ -15,7 +15,6 @@ import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.SelectionMode;
-import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import rim.Cart;
@@ -31,7 +30,7 @@ public class EditViewController implements Initializable{
 	@FXML private TextField price;
 	@FXML private TextField quantity;
 	@FXML private TextField threshold;
-	@FXML private TextArea description;
+	@FXML private TextField description;
 	@FXML private Label label;
 	private Boolean updateMode = false;
 	private Boolean addMode = false;
@@ -51,7 +50,7 @@ public class EditViewController implements Initializable{
 	 */
 	public void returnToLogin(ActionEvent event) throws IOException{
 		Parent loginViewParent = FXMLLoader.load(getClass().getResource("LoginView.fxml"));
-		Scene loginViewScene = new Scene(loginViewParent, 480, 320);
+		Scene loginViewScene = new Scene(loginViewParent);
 		
 		// get the stage information
 		Stage window = (Stage) ((Node)event.getSource()).getScene().getWindow();
@@ -120,7 +119,7 @@ public class EditViewController implements Initializable{
 //	
 	public void returnToInventory(ActionEvent event) throws IOException {
 		Parent inventoryViewParent = FXMLLoader.load(getClass().getResource("InventoryView.fxml"));
-		Scene inventoryViewScene = new Scene(inventoryViewParent, 1000, 600);
+		Scene inventoryViewScene = new Scene(inventoryViewParent,1200, 800);
 		
 		// get the stage information
 		Stage window = (Stage) ((Node)event.getSource()).getScene().getWindow();
