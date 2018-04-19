@@ -21,6 +21,7 @@ import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import rim.Account;
 import rim.ConnectionFactory;
+import rim.LoginView;
 
 
 
@@ -33,7 +34,7 @@ public class LoginController implements Initializable {
 	
 	public void loginButtonPushed(ActionEvent event) throws IOException {
 		// if valid credentials, go to InventoryView page
-		if (checkPassword(username.getText(), password.getText())) {
+		if (LoginView.checkPassword(username.getText(), password.getText())) {
 			Account.setCurrentUser(Account.accountFromUsername(username.getText()));
 			Parent inventoryViewParent = FXMLLoader.load(getClass().getResource("InventoryView.fxml"));
 			Scene inventoryViewScene = new Scene(inventoryViewParent,1000, 600);
@@ -44,7 +45,7 @@ public class LoginController implements Initializable {
 			window.setScene(inventoryViewScene);
 			window.show();
 		} else {
-			credentials.setText("Invalid credentials!");
+			triggerPopup(event);
 		}
 	}
 		
@@ -57,55 +58,16 @@ public class LoginController implements Initializable {
 	}
 	
 	
-	/**
-	 * verify the credentials
-	 */
-	private static boolean checkPassword(String username, String password) {
-
-		String input = password;
-		String dataPassword = null;
-		Connection conn = ConnectionFactory.makeConnection();
-
-		String query = "SELECT e.id AS id, " +
-				" 		e.first_name AS firstName, " +
-				"       e.last_name AS lastName, " + 
-				"       e.user_name AS userName, " +
-				"       e.password AS password " +
-				"FROM Employees e WHERE user_name = '" + username + "'";
-
+	public void triggerPopup(ActionEvent event) throws IOException {
+		Parent invalidCreds = FXMLLoader.load(getClass().getResource("InvalidCredentials.fxml"));
+		Scene invalidCredScene = new Scene(invalidCreds,400, 200);
 		
-		//System.out.println(query);
-
-
-		PreparedStatement ps = null;
-		ResultSet rs = null;
-
-		try {
-			ps = conn.prepareStatement(query);
-			rs = ps.executeQuery();
-			while(rs.next()) {
-				dataPassword       = rs.getString("password");
-				//System.out.println(dataPassword);
-
-			}
-		} catch (SQLException e) {
-			System.out.println("SQLException: ");
-			e.printStackTrace();
-			throw new RuntimeException(e);
-		}
-		ConnectionFactory.closeConnection(conn, ps, rs);
-		if(dataPassword == null)
-		{
-			return false;
-		}
-		else if(dataPassword.equals(password))
-		{
-			return true;
-		}
-		else
-		{
-			return false;
-		}
-
+		Stage window = new Stage();
+		
+		window.setScene(invalidCredScene);		
+		window.setResizable(false);
+		window.showAndWait();
 	}
+	
+	
 }
