@@ -13,14 +13,13 @@
 <?import javafx.scene.layout.Region?>
 <?import javafx.scene.layout.VBox?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.InventoryViewController">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/9.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.InventoryViewController">
    <top>
       <VBox BorderPane.alignment="CENTER">
          <children>
             <HBox spacing="10.0">
                <children>
-                  <TextField />
-                  <Button mnemonicParsing="false" text="Search" />
+                  <TextField fx:id="searchField" onKeyReleased="#search" />
                   <Region HBox.hgrow="ALWAYS" />
                   <Button mnemonicParsing="false" onAction="#toAccount" text="Account" />
                   <Button mnemonicParsing="false" onAction="#toStatistic" text="Inventory Data" />
@@ -58,6 +57,9 @@
                 <TableColumn fx:id="priceColumn" text="Price" />
                   <TableColumn fx:id="stockColumn" prefWidth="70.0" text="In stock" />
               </columns>
+               <VBox.margin>
+                  <Insets left="10.0" />
+               </VBox.margin>
             </TableView>
             <HBox prefHeight="100.0" prefWidth="200.0">
                <children>

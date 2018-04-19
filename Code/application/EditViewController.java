@@ -4,7 +4,12 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.List;
 import java.util.ResourceBundle;
+import java.util.function.Predicate;
 
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import javafx.collections.transformation.FilteredList;
+import javafx.collections.transformation.SortedList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -15,7 +20,12 @@ import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.SelectionMode;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
+import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
+import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.input.KeyEvent;
 import javafx.stage.Stage;
 import rim.Cart;
 import rim.Product;
@@ -23,26 +33,72 @@ import rim.Product;
 public class EditViewController implements Initializable{
 
 	
-	@FXML private ListView listView;
+	@FXML private ListView thresholdList;
 	@FXML private TextField productName;
 	@FXML private TextField type;
 	@FXML private TextField supplier;
 	@FXML private TextField price;
 	@FXML private TextField quantity;
 	@FXML private TextField threshold;
-	@FXML private TextField description;
+	@FXML private TextArea description;
 	@FXML private Label label;
+	@FXML private TableView inventoryTable;
+	@FXML private TableColumn nameColumn;
+	@FXML private TableColumn priceColumn;
+	@FXML private TableColumn stockColumn;
+	@FXML private TextField searchField;
 	private Boolean updateMode = false;
 	private Boolean addMode = false;
 	
+	// for search bar
+	ObservableList os = FXCollections.observableArrayList();
+	FilteredList filter = new FilteredList(os, e->true);
+	
+	
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
+		this.setInventoryTable();
+		inventoryTable.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
+		
+		this.setThresholdList();
+		
+		nameColumn.setCellValueFactory(new PropertyValueFactory<>("name"));
+		priceColumn.setCellValueFactory(new PropertyValueFactory<>("price"));
+		stockColumn.setCellValueFactory(new PropertyValueFactory<>("quantity"));
+		
+		
+		
+	}
+	
+	private void setInventoryTable() {
 		List<Product> products = Product.getProducts();
 		for(Product p : products) {
-			listView.getItems().add(p.getName());
+			inventoryTable.getItems().add(p);
+			os.add((Product) p);
 		}
-		listView.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
+	}
+	
+	/**
+	 * filters search bar
+	 * @param event
+	 */
+	public void search(KeyEvent event) {
+		searchField.textProperty().addListener((observable, oldValue, newValue) -> {
+			filter.setPredicate((Predicate<Product>) (Product product)->{
+			
+			if (newValue.isEmpty() || newValue == null) {
+				return true;
+			} else if (product.getName().toUpperCase().contains(newValue.toUpperCase())) {
+				return true;
+			}
+			return false;
+			
+			});
+		});
 		
+		SortedList sort = new SortedList(filter);
+		sort.comparatorProperty().bind(inventoryTable.comparatorProperty());
+		inventoryTable.setItems(sort);
 	}
 	
 	/**
@@ -50,7 +106,7 @@ public class EditViewController implements Initializable{
 	 */
 	public void returnToLogin(ActionEvent event) throws IOException{
 		Parent loginViewParent = FXMLLoader.load(getClass().getResource("LoginView.fxml"));
-		Scene loginViewScene = new Scene(loginViewParent);
+		Scene loginViewScene = new Scene(loginViewParent, 480, 320);
 		
 		// get the stage information
 		Stage window = (Stage) ((Node)event.getSource()).getScene().getWindow();
@@ -64,9 +120,10 @@ public class EditViewController implements Initializable{
 	 * remove item from inventory
 	 */
 	public void removeButtonPressed() {
-		Product p = findProduct((String) listView.getSelectionModel().getSelectedItem());
-		listView.getItems().remove(listView.getSelectionModel().getSelectedIndex());
+		Product p = (Product) inventoryTable.getSelectionModel().getSelectedItem();
+		inventoryTable.getItems().remove(inventoryTable.getSelectionModel().getSelectedIndex());
 		Product.removeProduct(p);
+		this.clearTextFields();
 	}
 
 	public void newButtonPressed() {
@@ -89,15 +146,21 @@ public class EditViewController implements Initializable{
 		String pDes = description.getText();
 		if (this.addMode) {
 			Product.addProduct(pName,pType,pDes,pQuan,pThre,pPrice,pSup);
-			listView.getItems().add(pName);
+			this.setInventoryTable();
 		} else if (this.updateMode) {
 			// TODO: finish functionality for updating an item
-			Product product = findProduct((String) listView.getSelectionModel().getSelectedItem());
+			Product product = (Product) inventoryTable.getSelectionModel().getSelectedItem();
 			Product.updatePrice(product, pPrice);
 			Product.updateQuantity(product.getId(), pQuan);
 			Product.updateDescription(product, pDes);
+			Product.updateName(product, pName);
+			Product.updateSupplier(product, pSup);
+			Product.updateThreshold(product, pThre);
+			Product.updateType(product, pType);
 		}
 		
+		this.thresholdList.getItems().clear();
+		this.setThresholdList();		
 		this.clearTextFields();
 		label.setText("Update Inventory");
 	}
@@ -119,7 +182,7 @@ public class EditViewController implements Initializable{
 //	
 	public void returnToInventory(ActionEvent event) throws IOException {
 		Parent inventoryViewParent = FXMLLoader.load(getClass().getResource("InventoryView.fxml"));
-		Scene inventoryViewScene = new Scene(inventoryViewParent,1200, 800);
+		Scene inventoryViewScene = new Scene(inventoryViewParent, 1000, 600);
 		
 		// get the stage information
 		Stage window = (Stage) ((Node)event.getSource()).getScene().getWindow();
@@ -133,21 +196,15 @@ public class EditViewController implements Initializable{
 	 * Update Item Button, this method sets the mode but does not actually update the item
 	 */
 	public void updateButtonPressed() {
-		label.setText("Update Item: " + listView.getSelectionModel().getSelectedItem());
+		label.setText("Update Item: " + ((Product) inventoryTable.getSelectionModel().getSelectedItem()).getName());
 		
-		Product p = findProduct((String) listView.getSelectionModel().getSelectedItem());
+		Product p = (Product) inventoryTable.getSelectionModel().getSelectedItem();
 		productName.setText(p.getName());
-		//System.out.println("Name: " +p.getName());
 		type.setText(p.getType());
-		//System.out.println("Type: " + p.getType());
 		supplier.setText(p.getSupplier());
-		//System.out.println("Supplier: " + p.getSupplier());
 		quantity.setText("" + p.getQuantity());
-		//System.out.println("Price: " + p.getPrice());
 		price.setText("" + p.getPrice());
-		//System.out.println("Description: " + p.getDescription());
 		description.setText(p.getDescription());
-		//System.out.println("Threshold: " + p.getThreshold());
 		threshold.setText("" + p.getThreshold());
 		
 		this.updateMode = true;
@@ -174,5 +231,12 @@ public class EditViewController implements Initializable{
 		quantity.setText("");
 		threshold.setText("");
 		description.setText("");
+	}
+	
+	private void setThresholdList() {
+		List<Product> thresholdItems = Product.getThresholdProducts();
+		for (Product p : thresholdItems) {
+			thresholdList.getItems().add(p.getName());
+		}
 	}
 }

@@ -5,8 +5,12 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
+import java.util.function.Predicate;
 
+import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.collections.transformation.FilteredList;
+import javafx.collections.transformation.SortedList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -14,14 +18,15 @@ import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.SelectionMode;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextArea;
+import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.input.KeyEvent;
 import javafx.stage.Stage;
 import rim.Cart;
 import rim.CartItem;
@@ -37,12 +42,17 @@ public class InventoryViewController implements Initializable {
 	@FXML private Label detailsLabel;
 	@FXML private ListView cartList;
 	@FXML private Label cartLabel;
+	@FXML private TextField searchField;
+	
 	private double priceSum = 0;
 	// list of items that were checked out, this is called in the ReceiptController
 	private List<Product> checkoutCart = new ArrayList<Product>();
 	public List<Product> getCheckoutCart() {
 		return checkoutCart;
 	}
+	
+	ObservableList os = FXCollections.observableArrayList();
+	FilteredList filter = new FilteredList(os, e->true);
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
@@ -54,19 +64,44 @@ public class InventoryViewController implements Initializable {
 		
 		for(Product p : products) {
 			inventoryTable.getItems().add(p);
-//			listView.getItems().add(p.getName());
+			os.add((Product) p);
+
 		}
 		cartList.getItems().clear();
 		for(CartItem item:Cart.getCart()) {
 			cartList.getItems().add(item.getP().getName() +"("+item.getSellingQuantity()+")"+ " - $" + String.format("%.2f", item.getP().getPrice()*item.getSellingQuantity()));
 			this.priceSum += item.getP().getPrice()*item.getSellingQuantity();
-			System.out.println(item);
 		}
 		this.cartLabel.setText(String.format("Cart Total: $%.2f", priceSum));
 		
 		inventoryTable.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
 		cartList.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
 	}
+	
+	
+	/**
+	 * filters search bar
+	 * @param event
+	 */
+	public void search(KeyEvent event) {
+		searchField.textProperty().addListener((observable, oldValue, newValue) -> {
+			filter.setPredicate((Predicate<Product>) (Product product)->{
+			
+			if (newValue.isEmpty() || newValue == null) {
+				return true;
+			} else if (product.getName().toUpperCase().contains(newValue.toUpperCase())) {
+				return true;
+			}
+			return false;
+			
+			});
+		});
+		
+		SortedList sort = new SortedList(filter);
+		sort.comparatorProperty().bind(inventoryTable.comparatorProperty());
+		inventoryTable.setItems(sort);
+	}
+	
 	
 	/**
 	 * display details in textArea
