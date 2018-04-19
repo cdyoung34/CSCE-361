@@ -45,8 +45,10 @@ public class LoginView {
 		InventoryView.displayProducts(0);
 	}
 
-	private static boolean checkPassword(String username, String password) {
-
+	public static boolean checkPassword(String username, String password) {
+		if (username.length() < 1 || password.length() < 1) {
+			return false;
+		}
 		String input = password;
 		String dataPassword = null;
 		Connection conn = ConnectionFactory.makeConnection();
@@ -94,5 +96,4 @@ public class LoginView {
 
 	}
 }
-
 
