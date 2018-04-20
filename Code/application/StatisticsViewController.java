@@ -4,9 +4,12 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.List;
 import java.util.ResourceBundle;
+import java.util.function.Predicate;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.collections.transformation.FilteredList;
+import javafx.collections.transformation.SortedList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -20,7 +23,9 @@ import javafx.scene.control.ListView;
 import javafx.scene.control.SelectionMode;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import rim.InventoryStatistics;
@@ -29,7 +34,10 @@ import rim.Product;
 import rim.Sale;
 
 public class StatisticsViewController implements Initializable {
-	@FXML private ListView listView;
+	@FXML private TableView inventoryTable;
+	@FXML private TableColumn nameColumn;
+	@FXML private TableColumn priceColumn;
+	@FXML private TableColumn stockColumn;
 	@FXML private ComboBox comboBox;
 	@FXML private CheckBox itemCheck;
 	@FXML private CheckBox monthCheck;
@@ -40,27 +48,38 @@ public class StatisticsViewController implements Initializable {
 	@FXML private TableColumn<Sale, String> idColumn;
 	@FXML private Text totalSaleLabel;
 	@FXML private Text quantitySoldLabel;
+	@FXML private TextField searchField;
 	
 	private static Product product;
 	private static String month;
 	
+	ObservableList os = FXCollections.observableArrayList();
+	FilteredList filter = new FilteredList(os, e->true);
 	
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
-		List<Product> products = Product.getProducts();
-		for(Product p : products) {
-			listView.getItems().add(p.getName());
-		}
+		this.setInventoryTable();
+		inventoryTable.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
 		
-		listView.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
-		
+		nameColumn.setCellValueFactory(new PropertyValueFactory<>("name"));
+		priceColumn.setCellValueFactory(new PropertyValueFactory<>("price"));
+		stockColumn.setCellValueFactory(new PropertyValueFactory<>("quantity"));
+
 		// for combo box
 		this.initializeMonths();
 	}
 	
+	private void setInventoryTable() {
+		List<Product> products = Product.getProducts();
+		for(Product p : products) {
+			inventoryTable.getItems().add(p);
+			os.add((Product) p);
+		}
+	}
+	
 	public void getDataPressed() {
 		// get product based on name in list
-		String pName = (String) listView.getSelectionModel().getSelectedItem();
+		String pName = ((Product) inventoryTable.getSelectionModel().getSelectedItem()).getName();
 		ItemStatistics is = null;
 		InventoryStatistics inv = null;
 		if (pName != null) {
@@ -168,6 +187,25 @@ public class StatisticsViewController implements Initializable {
 		comboBox.getItems().add("October");
 		comboBox.getItems().add("November");
 		comboBox.getItems().add("December");
+	}
+	
+	public void search(KeyEvent event) {
+		searchField.textProperty().addListener((observable, oldValue, newValue) -> {
+			filter.setPredicate((Predicate<Product>) (Product product)->{
+			
+			if (newValue.isEmpty() || newValue == null) {
+				return true;
+			} else if (product.getName().toUpperCase().contains(newValue.toUpperCase())) {
+				return true;
+			}
+			return false;
+			
+			});
+		});
+		
+		SortedList sort = new SortedList(filter);
+		sort.comparatorProperty().bind(inventoryTable.comparatorProperty());
+		inventoryTable.setItems(sort);
 	}
 
 }

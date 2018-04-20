@@ -39,14 +39,14 @@ public class EditEmployeeController implements Initializable {
 
 	public void updateEmployeePass(ActionEvent event) throws IOException {
 		if (checkPassword(Account.getCurrentUser().getUserName(), passField.getText())) {
-			if (newPassField.getText().equals("")) {
+			if (!newPassField.getText().equals("")) {
 				String newPass = newPassField.getText();
 				System.out.println(newPass);
 				Account.changePassword(id, newPass);
-				credential.setText("Update Successed!");
+				credential.setText("Password update succeeded!");
 			}
 			else {
-				credential.setText("No password enterd");
+				credential.setText("No password entered.");
 			}
 		} else {
 			credential.setText("Invalid credentials!");
@@ -55,15 +55,15 @@ public class EditEmployeeController implements Initializable {
 
 	public void updateEmployeeName(ActionEvent event) throws IOException {
 		if (checkPassword(Account.getCurrentUser().getUserName(), passField.getText())) {
-			if (newNameField.getText().equals("")) {
+			if (!newNameField.getText().equals("")) {
 				System.out.println(newNameField.getText());
 				String newName = newNameField.getText();
 				System.out.println(newName);
 				Account.changeUsername(id, newName);
 				;
-				credential.setText("Update Successed!");
+				credential.setText("Username update succeeded!");
 			} else {
-				credential.setText("No name entered");
+				credential.setText("No name entered.");
 			}
 		} else {
 			credential.setText("Invalid credentials!");

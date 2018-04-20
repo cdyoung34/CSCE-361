@@ -17,7 +17,7 @@
             <HBox spacing="10.0">
                <children>
                   <Region HBox.hgrow="ALWAYS" />
-                  <Button mnemonicParsing="false" onAction="#inventoryButtonPressed" text="Inventory" />
+                  <Button mnemonicParsing="false" onAction="#inventoryButtonPressed" text="Return to Inventory" />
                   <Button layoutX="308.0" layoutY="10.0" mnemonicParsing="false" onAction="#logOutPressed" text="Logout" />
                </children>
                <VBox.margin>
@@ -77,7 +77,7 @@
                   <Insets left="8.0" right="8.0" />
                </VBox.margin>
             </Label>
-            <TextArea fx:id="accountText" prefHeight="300.0" prefWidth="800.0">
+            <TextArea fx:id="accountText" editable="false" prefHeight="300.0" prefWidth="800.0">
                <VBox.margin>
                   <Insets bottom="8.0" left="8.0" right="8.0" />
                </VBox.margin>
@@ -92,7 +92,7 @@
                   <Insets left="8.0" right="8.0" top="16.0" />
                </VBox.margin>
             </Label>
-            <TextArea fx:id="employeeText" prefHeight="231.0" prefWidth="306.0">
+            <TextArea fx:id="employeeText" editable="false" prefHeight="231.0" prefWidth="306.0">
                <VBox.margin>
                   <Insets left="8.0" right="8.0" />
                </VBox.margin>

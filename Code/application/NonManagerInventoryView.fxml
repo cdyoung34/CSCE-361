@@ -13,7 +13,7 @@
 <?import javafx.scene.layout.Region?>
 <?import javafx.scene.layout.VBox?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.InventoryViewController">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.NonManagerInventoryViewController">
    <top>
       <VBox BorderPane.alignment="CENTER">
          <children>
@@ -21,9 +21,7 @@
                <children>
                   <TextField fx:id="searchField" onKeyReleased="#search" promptText="Search" />
                   <Region HBox.hgrow="ALWAYS" />
-                  <Button mnemonicParsing="false" onAction="#toAccount" text="Account Management" />
-                  <Button mnemonicParsing="false" onAction="#toStatistic" text="Sales Data" />
-                  <Button layoutX="402.0" layoutY="10.0" mnemonicParsing="false" onAction="#editModePressed" text="Modify Inventory" />
+                  <Button mnemonicParsing="false" onAction="#toAccount" text="Account Info" />
                   <Button layoutX="308.0" layoutY="10.0" mnemonicParsing="false" onAction="#returnToLogin" text="Logout" />
                </children>
                <VBox.margin>
@@ -86,7 +84,7 @@
                   <VBox prefHeight="300.0" prefWidth="800.0">
                      <children>
                         <Label fx:id="detailsLabel" text="Item Details" />
-                        <TextArea fx:id="textArea" editable="false" prefHeight="200.0" prefWidth="800.0" style="-fx-text-fill: #000000" wrapText="true"/>
+                        <TextArea fx:id="textArea" editable="false" prefHeight="200.0" prefWidth="800.0" style="-fx-text-fill: #000000" wrapText="true" />
                      </children>
                   </VBox>
                </children>

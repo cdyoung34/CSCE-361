@@ -35,15 +35,28 @@ public class LoginController implements Initializable {
 	public void loginButtonPushed(ActionEvent event) throws IOException {
 		// if valid credentials, go to InventoryView page
 		if (LoginView.checkPassword(username.getText(), password.getText())) {
-			Account.setCurrentUser(Account.accountFromUsername(username.getText()));
-			Parent inventoryViewParent = FXMLLoader.load(getClass().getResource("InventoryView.fxml"));
-			Scene inventoryViewScene = new Scene(inventoryViewParent,1000, 600);
 			
-			// get the stage information
-			Stage window = (Stage) ((Node)event.getSource()).getScene().getWindow();
-			
-			window.setScene(inventoryViewScene);
-			window.show();
+			//if user is a manager:
+			Account thisAccount = Account.accountFromUsername(username.getText());
+			if (thisAccount.getManagerId() != null) {
+				Account.setCurrentUser(Account.accountFromUsername(username.getText()));
+				Parent inventoryViewParent = FXMLLoader.load(getClass().getResource("InventoryView.fxml"));
+				Scene inventoryViewScene = new Scene(inventoryViewParent,1000, 600);
+				
+				// get the stage information
+				Stage window = (Stage) ((Node)event.getSource()).getScene().getWindow();
+				window.setScene(inventoryViewScene);
+				window.show();
+			} else {
+				Account.setCurrentUser(Account.accountFromUsername(username.getText()));
+				Parent inventoryViewParent = FXMLLoader.load(getClass().getResource("NonManagerInventoryView.fxml"));
+				Scene inventoryViewScene = new Scene(inventoryViewParent,1000, 600);
+				
+				// get the stage information
+				Stage window = (Stage) ((Node)event.getSource()).getScene().getWindow();
+				window.setScene(inventoryViewScene);
+				window.show();
+			}
 		} else {
 			triggerPopup(event);
 		}

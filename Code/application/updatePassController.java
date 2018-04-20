@@ -32,7 +32,7 @@ public class updatePassController implements Initializable{
 	public void updateButtonPressed(ActionEvent event) throws IOException {
 		if (checkPassword(Account.getCurrentUser().getUserName(), passField.getText())) {
 			Account.changePassword(Account.getCurrentUser().getId(), newPassField.getText());
-			credential.setText("Successed!");
+			credential.setText("Password successfully changed.");
 		}
 		else {
 			credential.setText("Invalid credentials!");
