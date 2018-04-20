@@ -48,11 +48,13 @@ public class Cart {
 		return cart;
 	}
 	public static void removeFromCart(String name) {
+		int indexToRemove = -1;
 		for (CartItem x : cart) {
 			if (x.getP().getName().equals(name)) {
-				cart.remove(x);
+				indexToRemove = cart.indexOf(x);
 			}
 		}
+		cart.remove(indexToRemove);
 	}
 	public static void clearCart() {
 		totalSale = 0;
