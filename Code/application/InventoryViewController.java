@@ -31,8 +31,8 @@ import javafx.stage.Stage;
 import rim.Cart;
 import rim.CartItem;
 import rim.Product;
-
-public class InventoryViewController implements Initializable {
+import rim
+.Cart;public class InventoryViewController implements Initializable {
 	
 	@FXML private TableView inventoryTable;
 	@FXML private TableColumn nameColumn;
@@ -47,6 +47,8 @@ public class InventoryViewController implements Initializable {
 	private double priceSum = 0;
 	// list of items that were checked out, this is called in the ReceiptController
 	private List<Product> checkoutCart = new ArrayList<Product>();
+	
+	//private Cart theCart = new Cart();
 	public List<Product> getCheckoutCart() {
 		return checkoutCart;
 	}
@@ -128,10 +130,16 @@ public class InventoryViewController implements Initializable {
 	}
 	
 	public void removeFromCartButtonPressed() {
-		Product p = findProduct((String) cartList.getSelectionModel().getSelectedItem());
+		//Product p = findProduct((String) cartList.getSelectionModel().getSelectedItem());
+		int productQuantity = Cart.getCart().get(cartList.getSelectionModel().getSelectedIndex()).getSellingQuantity();
+		Product p = Cart.getCart().get(cartList.getSelectionModel().getSelectedIndex()).getP();
+		
 		Cart.removeFromCart(p.getName());
 		cartList.getItems().remove(cartList.getSelectionModel().getSelectedIndex());
-		this.priceSum -= p.getPrice();
+		this.priceSum -= (p.getPrice() * productQuantity);
+		if (this.priceSum < 0.00) {
+			this.priceSum = 0.00;
+		}
 		this.cartLabel.setText(String.format("Cart Total: $%.2f", priceSum));
 	}
 	
