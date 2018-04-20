@@ -1,4 +1,6 @@
 package rim;
+
+import application.Check;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -129,7 +131,7 @@ public abstract class Account {
 
 	public static void addAccount(String firstName, String lastName, String username, String password,
 			Object managerId) {
-		if (!check.checkExistingUser(username)) {
+		if (!Check.checkExistingUser(username)) {
 			Connection conn = ConnectionFactory.makeConnection();
 
 			String query = "INSERT INTO Employees (first_name, last_name, user_name, password, manager_id)" +
