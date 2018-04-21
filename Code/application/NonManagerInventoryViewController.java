@@ -128,10 +128,16 @@ public class NonManagerInventoryViewController implements Initializable {
 	}
 	
 	public void removeFromCartButtonPressed() {
-		Product p = findProduct((String) cartList.getSelectionModel().getSelectedItem());
+		//Product p = findProduct((String) cartList.getSelectionModel().getSelectedItem());
+		int productQuantity = Cart.getCart().get(cartList.getSelectionModel().getSelectedIndex()).getSellingQuantity();
+		Product p = Cart.getCart().get(cartList.getSelectionModel().getSelectedIndex()).getP();
+		
 		Cart.removeFromCart(p.getName());
 		cartList.getItems().remove(cartList.getSelectionModel().getSelectedIndex());
-		this.priceSum -= p.getPrice();
+		this.priceSum -= (p.getPrice() * productQuantity);
+		if (this.priceSum < 0.00) {
+			this.priceSum = 0.00;
+		}
 		this.cartLabel.setText(String.format("Cart Total: $%.2f", priceSum));
 	}
 	
