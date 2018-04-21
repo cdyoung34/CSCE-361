@@ -77,6 +77,14 @@ public class StatisticsViewController implements Initializable {
 		}
 	}
 	
+	public void inventoryMouseClicked() {
+		this.itemCheck.setSelected(false);
+	}
+	
+	public void monthClicked() {
+		this.monthCheck.setSelected(false);
+	}
+	
 	public void getDataPressed() {
 		// get product based on name in list
 		String pName = ((Product) inventoryTable.getSelectionModel().getSelectedItem()).getName();
