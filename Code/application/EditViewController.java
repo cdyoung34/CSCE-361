@@ -131,7 +131,7 @@ public class EditViewController implements Initializable{
 	
 	public void returnToInventory(ActionEvent event) throws IOException {
 		Parent inventoryViewParent = FXMLLoader.load(getClass().getResource("InventoryView.fxml"));
-		Scene inventoryViewScene = new Scene(inventoryViewParent,1200, 800);
+		Scene inventoryViewScene = new Scene(inventoryViewParent,1000, 600);
 		
 		// get the stage information
 		Stage window = (Stage) ((Node)event.getSource()).getScene().getWindow();

@@ -1,5 +1,5 @@
 package application;
-
+import rim.Account;
 import java.net.URL;
 import java.util.ResourceBundle;
 
@@ -36,12 +36,12 @@ public class CreateAccountController implements Initializable{
  // Action on "createAccont" button.
  	public void createAccount(ActionEvent event){
  		
- 		if(!(firstName.getText().equals(""))  && (lastName.getText().equals("")) && (userName.equals("")) &&
+ 		if((!firstName.getText().equals(""))  && (!lastName.getText().equals("")) && (!userName.equals("")) &&
  				(password.getText().equals(passwordConfirmation.getText())	  )){
  			Account.addAccount(firstName.getText(), lastName.getText(), userName.getText(), password.getText(), managerId.getText());
  			message.setStyle("-fx-text-fill: green; -fx-font-size: 16;");
  			message.setText(" successfully added to the accounts.");
- 		}else if( (password.getText().equals("")) &&    !(password.getText().equals(passwordConfirmation.getText()))   ){
+ 		}else if( (password.getText().equals("")) ||    !(password.getText().equals(passwordConfirmation.getText()))   ){
  			message.setStyle("-fx-text-fill: red; -fx-font-size: 16;");
  			message.setText("Enter your password correctly" );
  			password.clear();

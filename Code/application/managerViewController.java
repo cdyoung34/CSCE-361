@@ -36,7 +36,7 @@ public class managerViewController implements Initializable{
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 		for(Employee e : employees) {
-			employeeListView.getItems().add(e.getFirstName()+", "+e.getLastName());
+			employeeListView.getItems().add(e.getFirstName()+" "+e.getLastName());
 		}
 		employeeListView.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
 		accountText.setText(Account.accountInfo(Account.getCurrentUser()));
@@ -68,7 +68,7 @@ public class managerViewController implements Initializable{
 	
 	public Employee findEmployee(String username) {
 		for(Employee e:employees) {
-			if((e.getFirstName()+", "+e.getLastName()).equals(username)) {
+			if((e.getFirstName()+" "+e.getLastName()).equals(username)) {
 				return e;
 			}
 		}
@@ -107,11 +107,40 @@ public class managerViewController implements Initializable{
 		window.setScene(updatePassViewScene);		
 		window.setResizable(false);
 		window.showAndWait();
+
 	}
 	public void deleteEmployeePressed() {
-		
+		Employee e = findEmployee((String) employeeListView.getSelectionModel().getSelectedItem());
+		employeeListView.getItems().remove(employeeListView.getSelectionModel().getSelectedIndex());
+		Employee.removeEmployee(e);
 	}
 	public void addEmployeePressed() {
+		FXMLLoader Loader = new FXMLLoader();
+		Loader.setLocation(getClass().getResource("CreateAccount.fxml"));
+		try {
+			Loader.load();
+		} catch (IOException ex) {
+			Logger.getLogger(managerViewController.class.getName()).log(Level.SEVERE, null, ex);
+			
+		}
+
+		CreateAccountController CreateAccountParent = Loader.getController();
+
+		Parent p = Loader.getRoot();
+		Scene CreateAccountViewScene = new Scene(p);
 		
+		Stage window = new Stage();
+		window.setScene(CreateAccountViewScene);
+		window.setResizable(false);
+		window.showAndWait();
+		refreshEmployeeList();
+		
+	}
+	public void refreshEmployeeList() {
+		List<Employee> employees = Employee.getEmployees();
+		employeeListView.getItems().clear();
+		for(Employee e : employees) {
+			employeeListView.getItems().add(e.getFirstName()+" "+e.getLastName());
+		}
 	}
 }

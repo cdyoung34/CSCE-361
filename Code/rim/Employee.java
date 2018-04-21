@@ -94,7 +94,27 @@ public class Employee extends Account{
 		// TODO Auto-generated method stub
 		return null;
 	}
+	
+	public static void removeEmployee(Employee employee) {
+		Connection conn = ConnectionFactory.makeConnection();
 
+		String query = "DELETE FROM Employees WHERE id = " + employee.getId();
+
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+
+		try {
+			ps = conn.prepareStatement(query);
+			ps.executeUpdate();
+
+		} catch (SQLException e) {
+			System.out.println("SQLException: ");
+			e.printStackTrace();
+			throw new RuntimeException(e);
+		}
+		//System.out.println("'" + p.getName() + "' successfully removed from the inventory.");
+		ConnectionFactory.closeConnection(conn, ps, rs);
+	}
 
 
 }

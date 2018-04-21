@@ -19,10 +19,9 @@
             <HBox spacing="10.0">
                <children>
                   <TextField fx:id="username" onAction="#loginButtonPushed" promptText="username" />
-                  <PasswordField fx:id="password" promptText="password" />
+                  <PasswordField fx:id="password" onAction="#loginButtonPushed" promptText="password" />
                   <Region HBox.hgrow="ALWAYS" />
                   <Button mnemonicParsing="false" onAction="#loginButtonPushed" text="Login" />
-                  <Button layoutX="308.0" layoutY="10.0" mnemonicParsing="false" text="Settings" />
                </children>
                <VBox.margin>
                   <Insets bottom="8.0" left="8.0" right="8.0" top="8.0" />
@@ -34,7 +33,7 @@
    <bottom>
       <HBox prefHeight="0.0" prefWidth="601.0" BorderPane.alignment="CENTER">
          <children>
-            <Label fx:id="credentials" text="Label" />
+            <Label fx:id="credentials" />
          </children>
          <padding>
             <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />

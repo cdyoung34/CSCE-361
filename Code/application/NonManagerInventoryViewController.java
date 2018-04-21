@@ -31,8 +31,8 @@ import javafx.stage.Stage;
 import rim.Cart;
 import rim.CartItem;
 import rim.Product;
-import rim
-.Cart;public class InventoryViewController implements Initializable {
+
+public class NonManagerInventoryViewController implements Initializable {
 	
 	@FXML private TableView inventoryTable;
 	@FXML private TableColumn nameColumn;
@@ -47,8 +47,6 @@ import rim
 	private double priceSum = 0;
 	// list of items that were checked out, this is called in the ReceiptController
 	private List<Product> checkoutCart = new ArrayList<Product>();
-	
-	//private Cart theCart = new Cart();
 	public List<Product> getCheckoutCart() {
 		return checkoutCart;
 	}
@@ -130,16 +128,10 @@ import rim
 	}
 	
 	public void removeFromCartButtonPressed() {
-		//Product p = findProduct((String) cartList.getSelectionModel().getSelectedItem());
-		int productQuantity = Cart.getCart().get(cartList.getSelectionModel().getSelectedIndex()).getSellingQuantity();
-		Product p = Cart.getCart().get(cartList.getSelectionModel().getSelectedIndex()).getP();
-		
+		Product p = findProduct((String) cartList.getSelectionModel().getSelectedItem());
 		Cart.removeFromCart(p.getName());
 		cartList.getItems().remove(cartList.getSelectionModel().getSelectedIndex());
-		this.priceSum -= (p.getPrice() * productQuantity);
-		if (this.priceSum < 0.00) {
-			this.priceSum = 0.00;
-		}
+		this.priceSum -= p.getPrice();
 		this.cartLabel.setText(String.format("Cart Total: $%.2f", priceSum));
 	}
 	
@@ -197,39 +189,17 @@ import rim
 	}
 	
 	public void toAccount(ActionEvent event) throws IOException{
-		Parent managerViewParent = FXMLLoader.load(getClass().getResource("managerView.fxml"));
-		Scene managerScene = new Scene(managerViewParent, 1000, 600);
+		Parent accountViewParent = FXMLLoader.load(getClass().getResource("NonManagerAccountView.fxml"));
+		Scene accountScene = new Scene(accountViewParent, 1000, 600);
 		
 		// get the stage information
 		Stage window = (Stage) ((Node)event.getSource()).getScene().getWindow();
 		
-		window.setScene(managerScene);
+		window.setScene(accountScene);
 		window.setResizable(false);
 		window.show();
 	}
-	public void toStatistic(ActionEvent event) throws IOException{
-		Parent statisticsViewParent = FXMLLoader.load(getClass().getResource("StatisticsView.fxml"));
-		Scene statisticsViewScene = new Scene(statisticsViewParent, 1000, 600);
-		
-		// get the stage information
-		Stage window = (Stage) ((Node)event.getSource()).getScene().getWindow();
-		
-		window.setScene(statisticsViewScene);
-		window.show();
-	}
+
 	
-	/**
-	 * go to edit view
-	 */
-	public void editModePressed(ActionEvent event) throws IOException{
-		Parent editViewParent = FXMLLoader.load(getClass().getResource("EditView.fxml"));
-		Scene editViewScene = new Scene(editViewParent,1000, 600);
-		
-		// get the stage information
-		Stage window = (Stage) ((Node)event.getSource()).getScene().getWindow();
-		
-		window.setScene(editViewScene);
-		window.show();
-	}
-	
+
 }
